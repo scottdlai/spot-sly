@@ -13,13 +13,13 @@ export interface QuizQuestion {
 
 export interface QuizProps {
   questions: QuizQuestion[];
-  wps: number;
+  wpm: number;
   retryAtSlowerSpeed: () => void;
   readAnotherPassage: () => void;
 }
 
 export default function Quiz({
-  wps,
+  wpm,
   questions,
   retryAtSlowerSpeed,
   readAnotherPassage
@@ -64,8 +64,8 @@ export default function Quiz({
         </div>
 
         <p className="text-lg paragraph-text text-on-subtle mb-2">
-          You answered all {questions.length} questions at {wps * 60} WPM! {percentageNumeric < 0.5 && (<span>But we don’t actually
-            think you understand what you read 😔</span>)}
+          You answered all {questions.length} questions at {wpm} WPM! But we don’t actually think
+          you understand what you read 😔
         </p>
 
         <div className="w-full flex flex-col gap-3">
