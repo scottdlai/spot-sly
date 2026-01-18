@@ -64,8 +64,8 @@ export default function Quiz({
         </div>
 
         <p className="text-lg paragraph-text text-on-subtle mb-2">
-          You answered all {questions.length} questions at {wpm} WPM! But we don’t actually think
-          you understand what you read 😔
+          You answered all {questions.length} questions at {wpm} WPM! {percentageNumeric < 0.5 && (<span>But we don’t actually think
+            you understand what you read 😔</span>)}
         </p>
 
         <div className="w-full flex flex-col gap-3">
