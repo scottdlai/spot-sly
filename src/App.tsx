@@ -5,6 +5,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import Bunny from './components/bunny';
 import { FileUpload, type FileUploadResult } from './FileUpload';
 import UploadedFile from './pages/UploadedFile';
+import { Textarea } from '@/components/ui/textarea';
 
 function App() {
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -24,8 +25,8 @@ function App() {
         </div>
 
         {/* SCOTT DO STUFF HERE */}
-        <Tabs defaultValue="file" className="flex flex-col w-full items-center justify-center">
-          <TabsList className="bg-surface-med w-full">
+        <Tabs defaultValue="file" className="flex flex-col w-full max-w-[400px] items-center justify-center">
+          <TabsList className="bg-surface-low w-full">
             <TabsTrigger value="file">File</TabsTrigger>
             <TabsTrigger value="text">Text</TabsTrigger>
           </TabsList>
@@ -38,7 +39,9 @@ function App() {
             />
           </TabsContent>
           <TabsContent value="text" className="">
-            Change your password here.
+            <div className='w-full min-w-[400px] min-h-[200px]'>
+              <Textarea placeholder='Enter text to read' className='w-full min-w-[400px] h-[200px] max-h-[200px]' />
+            </div>
           </TabsContent>
         </Tabs>
       </main>

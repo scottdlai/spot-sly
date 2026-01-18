@@ -78,21 +78,22 @@ export function FileUpload({
           fileInputRef.current?.click();
         }}
         className={`
-              mt-2 border-none bg-[#332a26] min-h-[250px] flex flex-col items-center justify-center cursor-pointer
-              transition-colors duration-200 ease-in-out hover:bg-[#3d332e]
+             border-none bg-surface-low hover:bg-surface-med/75 w-full min-w-[400px] min-h-[200px] flex flex-col items-center justify-center cursor-pointer rounded-md
+              transition-colors duration-200 ease-in-out
             `}
       >
-        <input ref={fileInputRef} type="file" accept=".epub" onChange={handleFileChange} />
+        <input id='files' ref={fileInputRef} type="file" accept=".epub" onChange={handleFileChange} className='hidden' />
 
-        <div className="flex flex-col items-center gap-4 text-center p-8">
-          <Upload className="w-6 h-6 text-[#d9c5b2]" />
-          <div className="space-y-2">
-            <p className="text-[#d9c5b2] text-lg">Upload file to read</p>
-            <p className="text-[#8c7a70] text-sm">
-              Drag or select to upload a .PDF or .EPUB file <br />
-              smaller than 50 MB
-            </p>
+        <div className="flex flex-col items-center gap-4 text-center w-full p-8">
+          <div className='flex flex-row gap-2 items-center justify-center'>
+            <Upload className="w-6 h-6 text-on-subtle" />
+            <p className="text-on text-lg">Upload file</p>
           </div>
+
+          <p className="text-on-subtle text-sm">
+            Drag or select to upload a .PDF or .EPUB file <br />
+            smaller than 50 MB
+          </p>
         </div>
       </Card>
 
