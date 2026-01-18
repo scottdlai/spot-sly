@@ -1,3 +1,25 @@
-.token_hl {
-  color: red;
+.reader {
+  display: grid;
+  grid-template-rows: 4fr 1fr;
+  width: 100vw;
+  justify-items: center;
+}
+
+.reader__token {
+  font-size: 5rem;
+}
+
+.reader__token__hl {
+  color: #CD785C;
+}
+
+.controls {
+  border: 1px solid black;
+  border-radius: 8px;
+}
+
+.controls__btns {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
 }

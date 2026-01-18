@@ -18,11 +18,13 @@ function getHighlightIndex(token: string): number {
 
 function SpeedReaderComponent() {
   const [currIndex, setCurrIndex] = useState<number>(0);
+  console.log("Made component");
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrIndex((prevIndex) => ((prevIndex + 1) % tokens.length));
     }, 1000 / wps);
+    console.log("Set up interval");
 
     return () => {
       clearInterval(timer);
@@ -30,11 +32,23 @@ function SpeedReaderComponent() {
   }, []);
 
   return (
-    <>
-      <div className="token">
-        <TokenComponent token={tokens[currIndex]} highlightIndex={getHighlightIndex(tokens[currIndex])}></TokenComponent>
+    <div className="reader">
+      <div className="reader__token">
+        <TokenComponent
+          token={tokens[currIndex]}
+          highlightIndex={getHighlightIndex(tokens[currIndex])}>
+        </TokenComponent>
       </div>
-    </>
+      <div className="controls">
+        <div className="controls__btns">
+          <div>A</div>
+          <div>B</div>
+          <div>C</div>
+          <div>D</div>
+          <div>E</div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -42,7 +56,7 @@ function TokenComponent({ token, highlightIndex }: TokenProps) {
   return (<>
     {
       token.split("").map((char, index) => {
-        const style = (index === highlightIndex) ? 'token_hl' : '';
+        const style = (index === highlightIndex) ? 'reader__token__hl' : '';
 
         return <span key={index} className={style ?? undefined}>{char}</span>
       })
