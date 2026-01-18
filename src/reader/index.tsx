@@ -41,12 +41,13 @@ function SpeedReaderComponent() {
       </div>
       <div className="controls">
         <div className="controls__btns">
-          <div>A</div>
-          <div>B</div>
-          <div>C</div>
-          <div>D</div>
-          <div>E</div>
+          <button>A</button>
+          <button>B</button>
+          <button>C</button>
+          <button>D</button>
+          <button>E</button>
         </div>
+        <div></div>
       </div>
     </div>
   )

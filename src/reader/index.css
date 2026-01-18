@@ -16,6 +16,8 @@
 .controls {
   border: 1px solid black;
   border-radius: 8px;
+  padding: 1rem;
+  min-width: 300px;
 }
 
 .controls__btns {
@@ -23,3 +25,18 @@
   justify-content: center;
   gap: 1rem;
 }
+
+.controls__btns > button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.controls__btns > div:hover {
+  background-color: #f0f0f0;
+}
+
