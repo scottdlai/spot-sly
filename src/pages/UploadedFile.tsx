@@ -15,9 +15,13 @@ type Section = {
 
 export interface UploadedFileProps {
   result: FileUploadResult;
+  onBack: () => void;
 }
 
-export default function UploadedFile({ result: responseData }: UploadedFileProps) {
+export default function UploadedFile({
+  result: responseData,
+  onBack: cancelCurrentBook
+}: UploadedFileProps) {
   console.log('UploadedFile rendered with:', responseData);
 
   // State to track the selected section
@@ -103,7 +107,10 @@ export default function UploadedFile({ result: responseData }: UploadedFileProps
     <div className="grid grid-cols-4 w-full max-w-full overflow-x-hidden gap-8 lg:gap-32 p-4 lg:p-12">
       <div className="flex flex-col col-span-1 gap-1 select-none">
         {/* Return */}
-        <button className="ml-2 w-[32px] h-[32px] icon-button rounded-lg bg-transparent hover:bg-surface-med/75 transition-colors duration-200 ease-in-out">
+        <button
+          className="ml-2 w-[32px] h-[32px] icon-button rounded-lg bg-transparent hover:bg-surface-med/75 transition-colors duration-200 ease-in-out"
+          onClick={cancelCurrentBook}
+        >
           <ArrowLeftIcon className="w-4 h-4 mx-auto my-auto text-on-subtle" />
         </button>
 

@@ -19,7 +19,7 @@ function App() {
 
   if (result !== null) {
     console.log('Rendering UploadedFile with result:', result);
-    return <UploadedFile result={result} />;
+    return <UploadedFile result={result} onBack={() => setResult(null)} />;
   }
 
   return (
