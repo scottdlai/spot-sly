@@ -56,9 +56,7 @@ export default function Quiz({ passageText, questions = mockQuiz }: QuizProps ) 
     useEffect(() => {
         async function getQuizQuestions() {
 
-            const envApiKey = import.meta.env.VITE_API_KEY;
-            console.log(envApiKey);
-
+            const envApiKey = import.meta.env.VITE_GEMINI_API_KEY;
             const ai = new GoogleGenAI({ apiKey: envApiKey });
 
             // GEMINI
