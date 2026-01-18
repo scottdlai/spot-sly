@@ -96,6 +96,7 @@
 
   /* Surface colors */
   --color-surface-lowest: var(--color-surface-lowest);
+  --color-surface-lowest-transparent: color-mix(in srgb, var(--color-surface-lowest) 0%, transparent);
   --color-surface-low: var(--color-surface-low);
   --color-surface-med: var(--color-surface-med);
   --color-surface-hi: var(--color-surface-hi);
@@ -108,9 +109,27 @@
   --color-on-inverse: var(--color-on-inverse);
 }
 
+@layer base {
+  ::selection {
+    background-color: var(--color-secondary);
+    color: var(--color-on);
+  }
+
+  ::-moz-selection {
+    background-color: var(--color-secondary);
+    color: var(--color-on);
+  }
+}
+
+.gradient-overlay {
+  background: linear-gradient(0deg, var(--color-surface-lowest) 0%, var(--color-surface-lowest-transparent) 100%);
+}
+
 body {
-  min-width: 100vw;
+  margin: 0;
+  width: 100%;
   min-height: 100vh;
+  overflow-x: hidden;
   background-color: var(--color-surface-lowest);
   color: var(--color-on);
   font-family: "Styrene", sans-serif;
