@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './quiz.css';
 import CorrectAnswerIcon from '@/assets/icons/correct-answer';
 import WrongAnswerIcon from '@/assets/icons/wrong-answer';
@@ -48,6 +48,15 @@ export default function Quiz({ passageText, questions = mockQuiz }: QuizProps = 
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState<number>(0);
+
+  useEffect(() => {
+    async function getQuizQuestions(passageText: string) {
+
+    // Put your prompt request logic here
+    }
+    const result = await getQuizQuestions;
+    }
+  }, []); // Don't put anything in the dependency array
 
   const currentQuestion = questions[current];
   const finished = current >= questions.length;
