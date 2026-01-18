@@ -40,54 +40,70 @@ export function FileUpload({
       const parser = new DOMParser();
       const book = await initEpubFile(file);
       const spine = book.getSpine();
-      // console.log(book);
-      // console.log(spine);
       const promises = [];
       for (const section of spine) {
         promises.push(book.loadChapter(section.id));
       }
       const chapters = await Promise.all(promises);
       const sections: Section[] = [];
+
       for (const { html } of chapters) {
         const doc = parser.parseFromString(html, 'text/html');
+
         // Remove all anchors first
         const anchorTags = doc.querySelectorAll('a');
         anchorTags.forEach(anchor => {
           const textNode = doc.createTextNode(anchor.textContent || '');
           anchor.parentNode?.replaceChild(textNode, anchor);
         });
-        const topLevel = doc.querySelectorAll('h1');
 
-        // If no h1s then skip
-        if (!topLevel.length) {
+        // Find all heading elements
+        const headings = doc.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+        // Skip sections with no headings
+        if (!headings.length) {
           continue;
         }
-        topLevel.forEach(top => console.log(top.textContent));
 
-        // const section = {};
-        // // Parse a section
-        // for (const top of topLevel) {
-        //   section.title = top.textContent;
-        // }
-        // // Recursively parse the document to extract sections
-        // result.push({});
+        // Process each heading and collect text until next heading
+        headings.forEach(heading => {
+          const title = heading.textContent?.replace(/\s+/g, ' ').trim() || 'Untitled';
+          const level = heading.tagName as Section['level'];
+
+          // Collect all text nodes between this heading and the next
+          const textParts: string[] = [];
+          let sibling = heading.nextElementSibling;
+
+          while (sibling) {
+            // Stop if we hit the next heading
+            if (/^H[1-6]$/.test(sibling.tagName)) {
+              break;
+            }
+            const text = sibling.textContent?.trim();
+            if (text) {
+              textParts.push(text);
+            }
+            sibling = sibling.nextElementSibling;
+          }
+
+          const text = textParts.join(' ').replace(/\s+/g, ' ').trim();
+
+          // Only add section if it has content
+          if (text) {
+            sections.push({ title, text, level });
+          }
+        });
       }
 
-      // const sections = (await Promise.all(promises)).map(({ html }) => {
-      //   const doc = parser.parseFromString(html, 'text/html');
-      //   let topLevel = doc.querySelectorAll('h1');
-      //
-      //   // If no h1s then check the h2s
-      //   if (!topLevel.length) {
-      //     topLevel = doc.querySelectorAll('h2');
-      //   }
-      //   // h1Elements.forEach(h1 => console.log(h1.textContent?.replace(/\r\n|\n|\r/gm, ' ')));
-      //   return doc;
-      // });
-      // console.log(sections);
-      // return;
-      // handleResult(sections);
-      // setResult(sections);
+      const uploadResult: FileUploadResult = {
+        sections,
+        name: file.name.replace(/\.epub$/i, '')
+      };
+
+      setResult(uploadResult);
+      if (handleResult) {
+        handleResult(uploadResult);
+      }
     } catch (err: unknown) {
       setError((err as Error).message);
       if (handleError) {

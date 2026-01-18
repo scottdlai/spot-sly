@@ -22,8 +22,6 @@ export default function UploadedFile({
   result: responseData,
   onBack: cancelCurrentBook
 }: UploadedFileProps) {
-  console.log('UploadedFile rendered with:', responseData);
-
   // State to track the selected section
   const [selectedSection, setSelectedSection] = useState<Section | null>(
     responseData.sections[0] || null
