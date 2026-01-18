@@ -5,15 +5,15 @@ import { cva } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const treeVariants = cva(
-    'group hover:before:opacity-100 before:absolute before:rounded-lg before:left-0 px-2 before:w-full before:opacity-0 before:bg-accent/70 before:h-[2rem] before:-z-10'
+    'group hover:before:bg-secondary-subtle before:absolute before:rounded-lg before:left-0 px-2 before:w-full before:h-[2rem] before:-z-10'
 )
 
 const selectedTreeVariants = cva(
-    'before:opacity-100 before:bg-accent/70 text-accent-foreground'
+    'before:opacity-100 before:bg-secondary hover:before:bg-primary text-on'
 )
 
 const dragOverVariants = cva(
-    'before:opacity-100 before:bg-primary/20 text-primary-foreground'
+    'before:opacity-100 before:bg-primary/20 text-on'
 )
 
 interface TreeDataItem {
@@ -143,7 +143,7 @@ const TreeView = React.forwardRef<HTMLDivElement, TreeProps>(
                 />
                 <div
                     className='w-full h-[48px]'
-                    onDrop={() => { handleDrop({id: '', name: 'parent_div'})}}>
+                    onDrop={() => { handleDrop({ id: '', name: 'parent_div' }) }}>
                 </div>
             </div>
         )
@@ -421,7 +421,7 @@ const TreeLeaf = React.forwardRef<
             <div
                 ref={ref}
                 className={cn(
-                    'ml-5 flex text-left items-center py-2 cursor-pointer before:right-1',
+                    'flex text-left items-center py-2 cursor-pointer before:right-1',
                     treeVariants(),
                     className,
                     isSelected && selectedTreeVariants(),
@@ -553,9 +553,9 @@ const TreeActions = ({
     )
 }
 
-export { 
-    TreeView, 
-    type TreeDataItem, 
+export {
+    TreeView,
+    type TreeDataItem,
     type TreeRenderItemParams,
     AccordionTrigger,
     AccordionContent,
