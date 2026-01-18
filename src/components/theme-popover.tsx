@@ -39,25 +39,28 @@ export function ThemePopover({ theme, onThemeChange, trigger }: ThemePopoverProp
       <PopoverContent
         side="bottom"
         sideOffset={8}
-        className="bg-surface-med border-none rounded-lg w-fit shadow-2xl"
+        className="bg-surface-med border-none rounded-lg w-fit !pb-2"
       >
-        <div className="space-y-4">
+        <div className="space-y-3">
           <p className="text-on-subtle text-sm font-medium px-1">Select theme</p>
 
-          <div className="flex flex-col gap-1.5 min-w-[180px]">
+          <div className="grid grid-cols-2 gap-2 w-full max-w-[400px]">
             {THEMES.map((themeOption) => (
-              <button
-                key={themeOption}
-                type="button"
-                onClick={() => onThemeChange(themeOption)}
-                className={`text-left px-3 py-2 rounded-lg transition-colors ${
-                  theme === themeOption
-                    ? 'bg-primary text-on-primary font-medium'
-                    : 'bg-surface-hi/50 hover:bg-surface-hi text-on hover:text-white'
-                }`}
-              >
-                {THEME_NAMES[themeOption]}
-              </button>
+              <div key={themeOption} data-theme={themeOption}>
+                <button
+                  type="button"
+                  onClick={() => onThemeChange(themeOption)}
+                  className={`px-2 w-full text-left text-sm rounded-lg transition-colors flex items-center gap-2 ${theme === themeOption
+                    ? 'bg-surface-low text-on font-medium outline outline-2 outline-primary border-box'
+                    : 'bg-surface-low text-on'
+                    }`}
+                >
+                  <div className="flex flex-col gap-1 w-full items-center py-2">
+                    <span className='large-title'><span className='text-on'>A</span><span className='text-primary'>b</span>c</span>
+                    <span className='text-sm text-on-subtle text-center'>{THEME_NAMES[themeOption]}</span>
+                  </div>
+                </button>
+              </div>
             ))}
           </div>
         </div>

@@ -30,7 +30,7 @@ function App() {
     <>
       <main className="flex flex-col items-center justify-center min-w-screen min-h-screen">
         <div className="h-[120px] flex gap-3 w-full items-center justify-center">
-          <Bunny />
+          <Bunny className='text-on-subtle' />
           <span className="font-serif text-2xl text-on font-medium leading-none">appName</span>
         </div>
 

@@ -70,7 +70,7 @@ export default function Quiz({ questions = mockQuiz }: QuizProps = {}) {
     if (finished) {
         return (
             <div className="min-h-screen flex flex-col gap-6 items-center justify-center p-10 *:max-w-md text-center">
-                <Bunny />
+                <Bunny className='text-on-subtle' />
 
                 <div className='flex flex-col gap-1'>
                     <p className='text-on-subtle/75'>You got</p>

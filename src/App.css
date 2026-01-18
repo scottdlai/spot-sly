@@ -121,6 +121,10 @@
   }
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .gradient-overlay {
   background: linear-gradient(0deg, var(--color-surface-lowest) 0%, var(--color-surface-lowest-transparent) 100%);
 }
