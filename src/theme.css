@@ -140,7 +140,7 @@
   --color-surface-inverse: #e3e6d0;
 }
 
-/* Apply default theme to root by default */
+/* Apply default theme to root by default
 :root {
   --color-on-primary: #eee9e7;
   --color-primary: #cd785c;
@@ -157,4 +157,4 @@
   --color-surface-low: #271e1b;
   --color-surface-lowest: #181211;
   --color-surface-inverse: #eee9e7;
-}
+} */
