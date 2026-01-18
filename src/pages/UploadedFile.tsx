@@ -108,6 +108,18 @@ export default function UploadedFile({ result: responseData }: UploadedFileProps
         return paragraphs.length > 0 ? paragraphs : [text];
     };
 
+
+    // Validate that result has sections
+    if (!responseData || !responseData.sections || responseData.sections.length === 0) {
+        console.error('Invalid result data:', responseData);
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="text-on">No sections available to display.</div>
+            </div>
+        );
+    }
+
+
     return (
         <div className="grid grid-cols-4 w-full max-w-full overflow-x-hidden gap-8 lg:gap-32 p-4 lg:p-12">
             <div className="flex flex-col col-span-1 gap-1 select-none">
