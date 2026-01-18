@@ -6,8 +6,12 @@ import path from 'path';
 import { EpubParser } from '@ridi/epub-parser';
 import { JSDOM } from 'jsdom';
 
+import cors from 'cors';
+
 const app = express();
 const upload = multer();
+
+app.use(cors());
 
 // Remove punctuation except apostrophes
 function extractTextOnly(text) {
@@ -25,13 +29,13 @@ function splitHtmlIntoSections(html) {
   const sections = [];
   let current = { title: 'Intro', text: '' };
 
-  doc.body.childNodes.forEach((node) => {
+  doc.body.childNodes.forEach(node => {
     if (['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(node.nodeName)) {
       if (current.text.trim()) sections.push(current);
       current = {
         title: node.textContent.trim(),
         text: '',
-        level: node.nodeName,
+        level: node.nodeName
       };
     } else {
       current.text += node.textContent + '\n';
@@ -54,20 +58,20 @@ async function parseEpubFromBuffer(buffer) {
 
   const allSections = [];
 
-  // Loop over spine items (reading order)
+  console.log(book);
+
   for (const spineItem of book.spines) {
     const htmlText = await parser.readItem(spineItem, { extractBody: true });
-    const sections = splitHtmlIntoSections(htmlText).map((sec) => ({
+    const sections = splitHtmlIntoSections(htmlText).map(sec => ({
       ...sec,
-      text: extractTextOnly(sec.text),
+      text: extractTextOnly(sec.text)
     }));
     allSections.push(...sections);
   }
 
   return {
-    metadata: book.metadata,
-    toc: book.toc,
     sections: allSections,
+    name: book.titles?.join(', ') || ''
   };
 }
 
