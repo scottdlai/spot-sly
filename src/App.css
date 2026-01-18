@@ -1,21 +1,9 @@
-@import "tailwindcss";
-
-@theme {
-  --color-surface-low: #181211;
-  --color-surface-med: #3C2E2A;
-  --color-surface-hi: #5A473F;
-  --color-surface-inverse: #EEE9E7;
-
-  --color-on: #EEE9E7;
-  --color-on-subtle: #C5B4AD;
-  --color-on-disabled: #9B867E;
-
-  --color-on-inverse: #1E1715;
-}
+@import 'tailwindcss';
+@import './theme.css';
 
 body {
   min-width: 100vw;
   min-height: 100vh;
- background-color: var(--color-surface-low); 
- color: var(--color-on);
+  background-color: var(--color-surface-low);
+  color: var(--color-on);
 }

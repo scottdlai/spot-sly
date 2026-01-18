@@ -1,0 +1,108 @@
+/* Base theme configuration */
+
+/* Default Theme */
+.theme-default,
+[data-theme='default'] {
+  --color-on-primary: #eee9e7;
+  --color-primary: #cd785c;
+  --color-on-secondary: #ffd9cc;
+  --color-secondary: #402b24;
+  --color-on: #eee9e7;
+  --color-on-subtle: #c5b4ad;
+  --color-on-disabled: #9b867e;
+  --color-on-inverse: #1e1715;
+  --color-surface-hi: #5a473f;
+  --color-surface-med: #3c2e2a;
+  --color-surface-low: #271e1b;
+  --color-surface-lowest: #181211;
+  --color-surface-inverse: #eee9e7;
+}
+
+/* Forest Theme */
+.theme-forest,
+[data-theme='forest'] {
+  --color-on-primary: #faffd3;
+  --color-primary: #889717;
+  --color-on-secondary: #dcfff7;
+  --color-secondary: #0a5142;
+  --color-on: #fcffe2;
+  --color-on-subtle: #bfd2b8;
+  --color-on-disabled: #749a8a;
+  --color-on-inverse: #0f1a1c;
+  --color-surface-hi: #365055;
+  --color-surface-med: #22353a;
+  --color-surface-low: #ffffff;
+  --color-surface-lowest: #0f1a1c;
+  --color-surface-inverse: #fcffe2;
+}
+
+/* McDonalds Theme */
+.theme-mcdonalds,
+[data-theme='mcdonalds'] {
+  --color-on-primary: #ffcca4;
+  --color-primary: #a2330b;
+  --color-on-secondary: #d6fec8;
+  --color-secondary: #21640f;
+  --color-on: #201a14;
+  --color-on-subtle: #1f1d18;
+  --color-on-disabled: #3b372c;
+  --color-on-inverse: #caa35a;
+  --color-surface-hi: #e8b381;
+  --color-surface-med: #ffe6a7;
+  --color-surface-low: #ffffff;
+  --color-surface-lowest: #ffbf00;
+  --color-surface-inverse: #fcffe2;
+}
+
+/* Oat-milk Theme */
+.theme-oat-milk,
+[data-theme='oat-milk'] {
+  --color-on-primary: #ffe9d8;
+  --color-primary: #a0492d;
+  --color-on-secondary: #735132;
+  --color-secondary: #e7dfce;
+  --color-on: #201a14;
+  --color-on-subtle: #1f1d18;
+  --color-on-disabled: #3b372c;
+  --color-on-inverse: #eac47d;
+  --color-surface-hi: #ddd7c7;
+  --color-surface-med: #f0ebde;
+  --color-surface-low: #ffffff;
+  --color-surface-lowest: #f8f5ec;
+  --color-surface-inverse: #fcffe2;
+}
+
+/* Matcha Theme */
+.theme-matcha,
+[data-theme='matcha'] {
+  --color-on-primary: #d9ebdd;
+  --color-primary: #467850;
+  --color-on-secondary: #417e65;
+  --color-secondary: #c9e5df;
+  --color-on: #162014;
+  --color-on-subtle: #1a1f18;
+  --color-on-disabled: #2e3b2c;
+  --color-on-inverse: #c4d2ae;
+  --color-surface-hi: #bed5b1;
+  --color-surface-med: #dcead5;
+  --color-surface-low: #ffffff;
+  --color-surface-lowest: #e9f2e4;
+  --color-surface-inverse: #fcffe2;
+}
+
+/* Apply default theme to root by default */
+:root {
+  --color-on-primary: #eee9e7;
+  --color-primary: #cd785c;
+  --color-on-secondary: #ffd9cc;
+  --color-secondary: #402b24;
+  --color-on: #eee9e7;
+  --color-on-subtle: #c5b4ad;
+  --color-on-disabled: #9b867e;
+  --color-on-inverse: #1e1715;
+  --color-surface-hi: #5a473f;
+  --color-surface-med: #3c2e2a;
+  --color-surface-low: #271e1b;
+  --color-surface-lowest: #181211;
+  --color-surface-inverse: #eee9e7;
+}
