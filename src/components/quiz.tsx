@@ -7,49 +7,16 @@ import Bunny from './bunny';
 export interface QuizQuestion {
   question: string;
   options: string[];
-  correctIndex: number;
+  correctAnswerIndex: number;
 }
 
-const mockQuiz: QuizQuestion[] = [
-  {
-    question:
-      'According to the passage, why have manufacturers stopped trying to increase the clock speed of processors?',
-    options: [
-      'The industry has shifted focus entirely to mobile devices.',
-      'Moores Law has been repealed, making it physically impossible.',
-      'Increasing clock speed causes the processors to overheat.',
-      'There is no longer a demand for faster computing tasks.'
-    ],
-    correctIndex: 2
-  },
-  {
-    question: 'Which component is responsible for executing instructions in a CPU?',
-    options: ['ALU', 'Cache', 'Control Unit', 'Registers'],
-    correctIndex: 0
-  },
-  {
-    question: 'What is the primary purpose of a computer cache?',
-    options: [
-      'Store large files permanently',
-      'Speed up access to frequently used data',
-      'Manage power consumption',
-      'Handle network traffic'
-    ],
-    correctIndex: 1
-  }
-];
-
 export interface QuizProps {
-  questions?: QuizQuestion[];
+  questions: QuizQuestion[];
   retryAtSlowerSpeed: () => void;
   readAnotherPassage: () => void;
 }
 
-export default function Quiz({
-  questions = mockQuiz,
-  retryAtSlowerSpeed,
-  readAnotherPassage
-}: QuizProps) {
+export default function Quiz({ questions, retryAtSlowerSpeed, readAnotherPassage }: QuizProps) {
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState<number>(0);
@@ -68,7 +35,7 @@ export default function Quiz({
       setSelected(index);
     }
 
-    if (index === questions[current].correctIndex) {
+    if (index === questions[current].correctAnswerIndex) {
       setScore(score => score + 1);
     }
   };
@@ -123,7 +90,7 @@ export default function Quiz({
       <div className="grid grid-cols-1 gap-4 w-full">
         {currentQuestion.options.map((opt, idx) => {
           const isSelected = selected === idx;
-          const isCorrect = idx === currentQuestion.correctIndex;
+          const isCorrect = idx === currentQuestion.correctAnswerIndex;
           const hasAnswered = selected !== null;
 
           // Logic for button colors
@@ -170,7 +137,7 @@ export default function Quiz({
           return (
             <div className="flex">
               <button
-                key={idx}
+                key={`${currentQuestion.question}-${idx}`}
                 disabled={hasAnswered} // Prevent changing answer
                 onClick={() => handleSelect(idx)}
                 className={`question-option w-full body-text flex items-center gap-4 rounded-md text-left transition-all ${buttonStyles}`}
