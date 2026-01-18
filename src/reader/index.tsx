@@ -6,9 +6,12 @@ import NextWordIcon from '@/assets/icons/next-word';
 import NextSentenceIcon from '@/assets/icons/next-sentence';
 import LastSentenceIcon from '@/assets/icons/last-sentence';
 import LastWordIcon from '@/assets/icons/last-word';
-import Quiz from '@/components/quiz';
+import Quiz, { type QuizQuestion } from '@/components/quiz';
 import { WpmPopover } from '@/components/wpm-popover';
 import PauseIcon from '@/assets/icons/pause';
+import { GoogleGenAI } from '@google/genai';
+import { z } from 'zod/v3';
+import { zodToJsonSchema } from 'zod-to-json-schema';
 
 interface TokenProps {
   token: string;
@@ -37,6 +40,9 @@ function SpeedReaderComponent({ text, wps, onWpsChange, back }: SpeedReaderCompo
   const [isPaused, setIsPaused] = useState<boolean>(true);
 
   const [showControls, setShowControls] = useState<boolean>(true);
+
+  const [questions, setQuestions] = useState<QuizQuestion[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // 2. Effect to handle inactivity
   useEffect(() => {
@@ -93,9 +99,69 @@ function SpeedReaderComponent({ text, wps, onWpsChange, back }: SpeedReaderCompo
 
   const endOfText = currIndex >= tokens.length;
 
+  useEffect(() => {
+    async function getQuizQuestions() {
+      const envApiKey = import.meta.env.VITE_GEMINI_API_KEY;
+      const ai = new GoogleGenAI({ apiKey: envApiKey });
+
+      const questionSchema = z
+        .array(
+          z.object({
+            question: z.string().describe('The text of the quiz question'),
+            options: z
+              .array(z.string())
+              .length(4) // Strictly forces exactly 4 options
+              .describe('A list of 4 possible answers'),
+            correctAnswerIndex: z
+              .number()
+              .int()
+              .min(0)
+              .max(3) // Ensures the index points to one of the 4 options
+              .describe('The zero-based index of the correct answer')
+          })
+        )
+        .length(3); // Strictly forces exactly 3 questions in the quiz
+
+      const quizSchema = z.object({ questions: questionSchema }).describe('questions');
+
+      // GEMINI
+      const prompt =
+        'Extract the following text and generate high-quality multiple choice questions to measure understanding of the text: ' +
+        text +
+        +' Return strictly valid JSON matching the provided schema. Do not include introductory text like Here is your quiz.';
+
+      console.log(prompt);
+
+      setIsLoading(true);
+
+      try {
+        const response = await ai.models.generateContent({
+          model: 'gemini-2.5-flash-lite',
+          contents: prompt,
+          config: {
+            responseMimeType: 'application/json',
+            responseJsonSchema: zodToJsonSchema(quizSchema)
+          }
+        });
+        console.log(response.text);
+
+        if (response.text) {
+          setQuestions(JSON.parse(response.text)?.questions ?? []);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    getQuizQuestions();
+  }, [endOfText]);
+
   if (endOfText) {
-    return (
+    return isLoading ? (
+      <h1>Loadding...</h1>
+    ) : (
       <Quiz
+        questions={questions}
         retryAtSlowerSpeed={() => {
           setCurrIndex(0);
           onWpsChange(wps => wps - 1);
