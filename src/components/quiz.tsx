@@ -36,7 +36,7 @@ const mockQuiz: QuizQuestion[] = [
 ];
 
 export default function Quiz() {
-    
+
     const [quiz] = useState(mockQuiz);
     const [current, setCurrent] = useState(0);
     const [selected, setSelected] = useState<number | null>(null);
@@ -68,14 +68,16 @@ export default function Quiz() {
     }
 
 
-   return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-[#1e1e1e] text-white p-6">
-            <p className="text-sm text-gray-400 mb-2">Question {current + 1} of {quiz.length}</p>
-            <h1 className="text-center text-lg md:text-xl lg:text-2xl font-medium mb-6 whitespace-pre-line">
-                {currentQuestion.question}
-            </h1>
+    return (
+        <div className="min-h-screen *:max-w-lg flex flex-col items-center justify-between text-white p-10">
+            <div className="flex flex-col items-center justify-center text-center">
+                <p className="text-sm text-on-subtle mb-2">Question {current + 1} of {quiz.length}</p>
+                <h1 className="font-serif title-1">
+                    {currentQuestion.question}
+                </h1>
+            </div>
 
-            <div className="flex flex-col gap-4 w-full max-w-xl">
+            <div className="flex flex-col gap-4 w-full">
                 {currentQuestion.options.map((opt, idx) => {
                     const isSelected = selected === idx;
                     const isCorrect = idx === currentQuestion.correctIndex;
@@ -83,7 +85,7 @@ export default function Quiz() {
 
                     // Logic for button colors
                     let buttonStyles = "border-gray-700 hover:bg-gray-700";
-                    
+
                     if (hasAnswered) {
                         if (isCorrect) {
                             // Highlight the correct answer green
@@ -106,9 +108,11 @@ export default function Quiz() {
                             onClick={() => handleSelect(idx)}
                             className={`question-option flex items-center gap-2 px-4 py-3 rounded-md text-left border transition-all ${buttonStyles}`}
                         >
-                            <span className={`font-bold ${hasAnswered && isCorrect ? "text-green-400" : "text-gray-400"}`}>
-                                {String.fromCharCode(65 + idx)}
-                            </span>
+                            <div className="aspect-square w-6 h-6 bg-surface-hi rounded-md">
+                                <span className={`font-bold ${hasAnswered && isCorrect ? "text-green-400" : "text-on-subtle"}`}>
+                                    {String.fromCharCode(65 + idx)}
+                                </span>
+                            </div>
                             {opt}
                         </button>
                     );
@@ -159,5 +163,5 @@ export default function Quiz() {
 
 
 
-    
+
 }
