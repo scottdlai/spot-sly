@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import './index.css';
 import { Slider } from '@/components/ui/slider';
+import PlayIcon from '@/assets/icons/play';
+import NextWordIcon from '@/assets/icons/next-word';
+import NextSentenceIcon from '@/assets/icons/next-sentence';
+import LastSentenceIcon from '@/assets/icons/last-sentence';
+import LastWordIcon from '@/assets/icons/last-word';
 
 const testText =
   'The Project Gutenberg EBook of Alice in Wonderland by Lewis Carroll. This eBook is for the use of anyone anywhere at no cost and with almost no restrictions whatsoever. You may copy it give it away or reuse it under the terms of the Project Gutenberg License included with this eBook or online at www.gutenberg.org Title Alice in Wonderland Author Lewis Carroll Language English';
@@ -40,14 +45,19 @@ function SpeedReaderComponent() {
           highlightIndex={getHighlightIndex(tokens[currIndex])}
         ></TokenComponent>
       </div>
-      <div className="bg-primary rounded-xlg flex flex-col gap-2 p-1 min-w-90">
+
+      <div className="bg-primary rounded-xlg flex flex-col gap-2 p-1 min-w-90 bg-surface-low rounded-xl px-3 pt-1 pb-2 absolute bottom-8">
         <div className="control__top">
-          <div className="controls__btns">
-            <button>A</button>
-            <button>B</button>
-            <button>C</button>
-            <button>D</button>
-            <button>E</button>
+          <div className="controls__btns flex justify-between">
+            <div className='w-[32px] h-[32px] aspect-square'></div>
+            <div className='flex flex-row gap-0.5 w-full justify-center'>
+              <button><LastSentenceIcon className='text-on-subtle'></LastSentenceIcon></button>
+              <button><LastWordIcon className='text-on-subtle'></LastWordIcon></button>
+              <button><PlayIcon className="text-on-subtle pl-0.5 scale-125" /></button>
+              <button><NextWordIcon className='text-on-subtle'></NextWordIcon></button>
+              <button><NextSentenceIcon className='text-on-subtle'></NextSentenceIcon></button>
+            </div>
+            <button className='w-[32px] h-[32px] aspect-square'><span className='text-xs text-on-subtle'>600</span></button>
           </div>
         </div>
         <Slider

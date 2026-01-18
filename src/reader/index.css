@@ -24,7 +24,7 @@
 }
 
 .reader__token--hl {
-  color: #cd785c;
+  color: var(--color-primary);
 }
 
 .controls {
@@ -37,16 +37,25 @@
   justify-content: center;
 }
 
-.controls__btns > button {
-  width: 2rem;
-  height: 2rem;
+.controls__btns button {
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 4px;
   cursor: pointer;
+  padding: 0;
+  background-color: transparent;
+  border: none;
 }
 
-.controls__btns > div:hover {
-  background-color: #f0f0f0;
+.controls__btns button:hover {
+  background-color: var(--color-surface-med);
+  border: none;
+}
+
+.controls__btns button:hover {
+  background-color: var(--color-surface-med);
+  border: none;
 }
