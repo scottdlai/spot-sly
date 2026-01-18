@@ -41,12 +41,14 @@ function SpeedReaderComponent() {
         ></TokenComponent>
       </div>
       <div className="bg-primary rounded-xlg flex flex-col gap-2 p-1 min-w-90">
-        <div className="controls__btns">
-          <button>A</button>
-          <button>B</button>
-          <button>C</button>
-          <button>D</button>
-          <button>E</button>
+        <div className="control__top">
+          <div className="controls__btns">
+            <button>A</button>
+            <button>B</button>
+            <button>C</button>
+            <button>D</button>
+            <button>E</button>
+          </div>
         </div>
         <Slider
           className="control__progress opacity-100"
