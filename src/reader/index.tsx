@@ -6,6 +6,7 @@ import NextWordIcon from '@/assets/icons/next-word';
 import NextSentenceIcon from '@/assets/icons/next-sentence';
 import LastSentenceIcon from '@/assets/icons/last-sentence';
 import LastWordIcon from '@/assets/icons/last-word';
+import Quiz from '@/components/quiz';
 
 interface TokenProps {
   token: string;
@@ -29,14 +30,24 @@ function SpeedReaderComponent({ text, wps }: SpeedReaderComponentProps) {
   const [currIndex, setCurrIndex] = useState<number>(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrIndex(prevIndex => (prevIndex + 1) % tokens.length);
+    const timer = setTimeout(() => {
+      if (currIndex >= tokens.length) {
+        return;
+      }
+
+      setCurrIndex(prevIndex => prevIndex + 1);
     }, 1000 / wps);
 
     return () => {
       clearInterval(timer);
     };
-  }, []);
+  }, [setCurrIndex, currIndex, wps, tokens.length]);
+
+  const endOfText = currIndex >= tokens.length;
+
+  if (endOfText) {
+    return <Quiz />;
+  }
 
   return (
     <div className="reader">
@@ -50,15 +61,27 @@ function SpeedReaderComponent({ text, wps }: SpeedReaderComponentProps) {
       <div className="bg-primary rounded-xlg flex flex-col gap-2 p-1 min-w-90 bg-surface-low rounded-xl px-3 pt-1 pb-2 absolute bottom-8">
         <div className="control__top">
           <div className="controls__btns flex justify-between">
-            <div className='w-[32px] h-[32px] aspect-square'></div>
-            <div className='flex flex-row gap-0.5 w-full justify-center'>
-              <button><LastSentenceIcon className='text-on-subtle'></LastSentenceIcon></button>
-              <button><LastWordIcon className='text-on-subtle'></LastWordIcon></button>
-              <button><PlayIcon className="text-on-subtle pl-0.5 scale-125" /></button>
-              <button><NextWordIcon className='text-on-subtle'></NextWordIcon></button>
-              <button><NextSentenceIcon className='text-on-subtle'></NextSentenceIcon></button>
+            <div className="w-[32px] h-[32px] aspect-square"></div>
+            <div className="flex flex-row gap-0.5 w-full justify-center">
+              <button>
+                <LastSentenceIcon className="text-on-subtle"></LastSentenceIcon>
+              </button>
+              <button>
+                <LastWordIcon className="text-on-subtle"></LastWordIcon>
+              </button>
+              <button>
+                <PlayIcon className="text-on-subtle pl-0.5 scale-125" />
+              </button>
+              <button>
+                <NextWordIcon className="text-on-subtle"></NextWordIcon>
+              </button>
+              <button>
+                <NextSentenceIcon className="text-on-subtle"></NextSentenceIcon>
+              </button>
             </div>
-            <button className='w-[32px] h-[32px] aspect-square'><span className='text-xs text-on-subtle'>600</span></button>
+            <button className="w-[32px] h-[32px] aspect-square">
+              <span className="text-xs text-on-subtle">600</span>
+            </button>
           </div>
         </div>
         <Slider
