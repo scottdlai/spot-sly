@@ -43,13 +43,20 @@ export interface QuizProps {
 export default function Quiz({ questions = mockQuiz }: QuizProps = {}) {
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
+  const [score, setScore] = useState<number>(0);
 
   const currentQuestion = questions[current];
 
   const finished = current >= questions.length;
 
   const handleSelect = (index: number) => {
-    if (selected === null) setSelected(index);
+    if (selected === null) {
+      setSelected(index);
+    }
+
+    if (index === questions[current].correctIndex) {
+      setScore(score => score + 1);
+    }
   };
 
   const nextQuestion = () => {
@@ -60,7 +67,6 @@ export default function Quiz({ questions = mockQuiz }: QuizProps = {}) {
   };
 
   if (finished) {
-    const score = questions.reduce((acc, q) => acc + (selected === q.correctIndex ? 1 : 0), 0);
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#1e1e1e] text-white p-6">
         <h2 className="text-2xl font-semibold mb-4">Quiz Complete</h2>
