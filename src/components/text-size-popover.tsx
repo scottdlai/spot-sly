@@ -17,6 +17,7 @@ export function TextSizePopover({ textSize, onTextSizeChange, trigger, step = 0.
             </PopoverTrigger>
 
             <PopoverContent
+                align='end'
                 side="bottom"
                 sideOffset={8}
                 className="bg-surface-med border-none rounded-lg w-fit shadow-2xl"

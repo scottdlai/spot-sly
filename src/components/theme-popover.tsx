@@ -36,7 +36,7 @@ export function ThemePopover({ theme, onThemeChange, trigger }: ThemePopoverProp
         {trigger}
       </PopoverTrigger>
 
-      <PopoverContent
+      <PopoverContent align='end'
         side="bottom"
         sideOffset={8}
         className="bg-surface-med border-none rounded-lg w-fit !pb-2"
