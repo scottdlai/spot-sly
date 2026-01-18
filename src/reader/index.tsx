@@ -29,7 +29,7 @@ export interface SpeedReaderComponentProps {
 function SpeedReaderComponent({ text, wps, onWpsChange }: SpeedReaderComponentProps) {
   const tokens = text.split(' ');
 
-  const [currIndex, setCurrIndex] = useState<number>(1);
+  const [currIndex, setCurrIndex] = useState<number>(0);
 
   useEffect(() => {
     if (wps === 0) {
@@ -93,7 +93,7 @@ function SpeedReaderComponent({ text, wps, onWpsChange }: SpeedReaderComponentPr
 
             <WpmPopover
               wpm={wpm}
-              onWpmChange={(wpmChange) => {
+              onWpmChange={wpmChange => {
                 // Convert WPM change function to WPS change
                 onWpsChange(wps => wpmChange(wps * 60) / 60);
               }}
