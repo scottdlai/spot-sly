@@ -2,14 +2,10 @@ import { Card } from '@/components/ui/card';
 import { Upload } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { initEpubFile } from '@lingo-reader/epub-parser';
+import type { Section } from '@/pages/UploadedFile';
 
 export interface FileUploadResult {
-  sections: {
-    title: string;
-    text: string;
-    // some epub don't have heading levels
-    level?: 'H1' | 'H2' | 'H3' | 'H4' | 'H5' | 'H6';
-  }[];
+  sections: Section[];
   name: string;
 }
 
@@ -18,8 +14,6 @@ export interface FileUploadProps {
   readonly onError?: (err: Error) => void;
   readonly setIsUploading: (isUploading: boolean) => void;
 }
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export function FileUpload({
   onResult: handleResult,
@@ -40,33 +34,60 @@ export function FileUpload({
       return;
     }
 
-    const book = await initEpubFile(file);
-    const spine = book.getSpine();
-    console.log(spine);
-    return;
-
-    setIsUploading(true);
-    setError(null);
-
     try {
-      const formData = new FormData();
-      formData.append('file', file);
+      setIsUploading(true);
+      setError(null);
+      const parser = new DOMParser();
+      const book = await initEpubFile(file);
+      const spine = book.getSpine();
+      // console.log(book);
+      // console.log(spine);
+      const promises = [];
+      for (const section of spine) {
+        promises.push(book.loadChapter(section.id));
+      }
+      const chapters = await Promise.all(promises);
+      const sections: Section[] = [];
+      for (const { html } of chapters) {
+        const doc = parser.parseFromString(html, 'text/html');
+        // Remove all anchors first
+        const anchorTags = doc.querySelectorAll('a');
+        anchorTags.forEach(anchor => {
+          const textNode = doc.createTextNode(anchor.textContent || '');
+          anchor.parentNode?.replaceChild(textNode, anchor);
+        });
+        const topLevel = doc.querySelectorAll('h1');
 
-      const res = await fetch(`${API_URL}/upload`, {
-        method: 'POST',
-        body: formData
-      });
+        // If no h1s then skip
+        if (!topLevel.length) {
+          continue;
+        }
+        topLevel.forEach(top => console.log(top.textContent));
 
-      if (!res.ok) {
-        throw new Error(`Upload failed: ${res.status}`);
+        // const section = {};
+        // // Parse a section
+        // for (const top of topLevel) {
+        //   section.title = top.textContent;
+        // }
+        // // Recursively parse the document to extract sections
+        // result.push({});
       }
 
-      const data = await res.json();
-      setResult(data);
-
-      if (handleResult) {
-        handleResult(data);
-      }
+      // const sections = (await Promise.all(promises)).map(({ html }) => {
+      //   const doc = parser.parseFromString(html, 'text/html');
+      //   let topLevel = doc.querySelectorAll('h1');
+      //
+      //   // If no h1s then check the h2s
+      //   if (!topLevel.length) {
+      //     topLevel = doc.querySelectorAll('h2');
+      //   }
+      //   // h1Elements.forEach(h1 => console.log(h1.textContent?.replace(/\r\n|\n|\r/gm, ' ')));
+      //   return doc;
+      // });
+      // console.log(sections);
+      // return;
+      // handleResult(sections);
+      // setResult(sections);
     } catch (err: unknown) {
       setError((err as Error).message);
       if (handleError) {
@@ -88,10 +109,17 @@ export function FileUpload({
               transition-colors duration-200 ease-in-out
             `}
       >
-        <input id='files' ref={fileInputRef} type="file" accept=".epub" onChange={handleFileChange} className='hidden' />
+        <input
+          id="files"
+          ref={fileInputRef}
+          type="file"
+          accept=".epub"
+          onChange={handleFileChange}
+          className="hidden"
+        />
 
         <div className="flex flex-col items-center gap-4 text-center w-full p-8">
-          <div className='flex flex-row gap-2 items-center justify-center'>
+          <div className="flex flex-row gap-2 items-center justify-center">
             <Upload className="w-6 h-6 text-on-subtle" />
             <p className="text-on text-lg">Upload file</p>
           </div>

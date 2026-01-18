@@ -6,12 +6,12 @@ import { ReadingControls } from '@/components/reading-controls';
 import SpeedReaderComponent from '@/reader';
 import { ArrowLeftIcon } from 'lucide-react';
 
-type Section = {
+export interface Section {
   title: string;
   text: string;
   // some epub don't have heading levels
   level?: 'H1' | 'H2' | 'H3' | 'H4' | 'H5' | 'H6';
-};
+}
 
 export interface UploadedFileProps {
   result: FileUploadResult;
