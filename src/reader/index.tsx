@@ -88,7 +88,7 @@ function SpeedReaderComponent({
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const { wpm } = useWpm();
+  const { wpm, setWpm } = useWpm();
 
   // Use WPM from localStorage, convert to WPS for reading speed
   const currentWps = wpm / 60;
@@ -207,8 +207,6 @@ function SpeedReaderComponent({
     getQuizQuestions();
   }, [endOfText, text]);
 
-  const { setWpm } = useWpm();
-
   if (endOfText) {
     return isLoading ? (
       <div className='flex flex-col gap-1.5 justify-center items-center min-w-screen min-h-screen'>
@@ -314,6 +312,8 @@ function SpeedReaderComponent({
               </div>
 
               <WpmPopover
+                wpm={wpm}
+                setWpm={setWpm}
                 trigger={
                   <button className="w-[32px] h-[32px] aspect-square">
                     <span className="text-xs text-on-subtle">{wpm}</span>

@@ -19,7 +19,7 @@ export function ReadingControls({
       <div className="buttons flex flex-row gap-3">
         <WpmPopover
           wpm={wpm}
-          onWpmChange={wpmChangeFunc => setWpm(wpmChangeFunc)}
+          setWpm={setWpm}
           trigger={
             <button
               type="button"

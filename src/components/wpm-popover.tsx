@@ -1,16 +1,15 @@
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { useWpm } from '@/hooks/useWpm';
 import { Minus, Plus } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 interface WpmPopoverProps {
   trigger: ReactNode;
   step?: number;
+  wpm: number;
+  setWpm: (f: (curWpm: number) => number) => void;
 }
 
-export function WpmPopover({ trigger, step = 60 }: WpmPopoverProps) {
-  const { wpm, setWpm } = useWpm();
-
+export function WpmPopover({ wpm, setWpm, trigger, step = 60 }: WpmPopoverProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>{trigger}</PopoverTrigger>
