@@ -95,7 +95,7 @@ function SpeedReaderComponent({
 
   // 2. Effect to handle inactivity
   useEffect(() => {
-    let timer: number;
+    let timer: any;
 
     const handleMouseMove = () => {
       setShowControls(true);
@@ -150,15 +150,12 @@ function SpeedReaderComponent({
 
   useEffect(() => {
     async function getQuizQuestions() {
-
       setIsLoading(true);
-
 
       // try {
 
       setQuestions(mockQuiz);
       setIsLoading(false);
-
     }
 
     getQuizQuestions();
@@ -166,9 +163,9 @@ function SpeedReaderComponent({
 
   if (endOfText) {
     return isLoading ? (
-      <div className='flex flex-col gap-1.5 justify-center items-center min-w-screen min-h-screen'>
-        <Bunny className='text-on-subtle'></Bunny>
-        <p className='text-on-subtle'>Generating quiz...</p>
+      <div className="flex flex-col gap-1.5 justify-center items-center min-w-screen min-h-screen">
+        <Bunny className="text-on-subtle"></Bunny>
+        <p className="text-on-subtle">Generating quiz...</p>
       </div>
     ) : (
       <Quiz

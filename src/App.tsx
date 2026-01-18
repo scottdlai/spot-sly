@@ -75,8 +75,6 @@ function App() {
             <div className="w-full absolute bottom-0 fixed left-0">
               <ReadingControls
                 hasTextSelected={hasTextSelected}
-                wpm={wpm}
-                onWpmChange={setWpm}
                 noTextHint="Enter text to start reading"
                 onStartReading={() =>
                   setResult({
