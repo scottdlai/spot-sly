@@ -49,15 +49,15 @@
   --color-on-secondary: #d6fec8;
   --color-secondary: #21640f;
   --color-secondary-subtle: #21640f;
-  --color-on: #201a14;
-  --color-on-subtle: #1f1d18;
-  --color-on-disabled: #3b372c;
-  --color-on-inverse: #caa35a;
-  --color-surface-hi: #e8b381;
-  --color-surface-med: #ffe6a7;
-  --color-surface-low: #ffc83c;
-  --color-surface-lowest: #ffbf00;
-  --color-surface-inverse: #fcffe2;
+  --color-on: #27200D;
+  --color-on-subtle: #664900;
+  --color-on-disabled: #997C33;
+  --color-on-inverse: #CAA35A;
+  --color-surface-hi: #FFD5AD;
+  --color-surface-med: #FFDB80;
+  --color-surface-low: #FFCB47;
+  --color-surface-lowest: #FFBF00;
+  --color-surface-inverse: #FCFFE2;
 }
 
 /* Oat-milk Theme */
@@ -109,7 +109,7 @@
   --color-on-secondary: #f0ac5e;
   --color-secondary: #423503;
   --color-secondary-subtle: #423503;
-  --color-on: #ffa4ad;
+  --color-on: #FFD6DA;
   --color-on-subtle: #d28d94;
   --color-on-disabled: #cd8f95;
   --color-on-inverse: #21181e;
@@ -140,7 +140,7 @@
   --color-surface-inverse: #e3e6d0;
 }
 
-/* Apply default theme to root by default */
+/* Apply default theme to root by default
 :root {
   --color-on-primary: #eee9e7;
   --color-primary: #cd785c;
@@ -157,4 +157,4 @@
   --color-surface-low: #271e1b;
   --color-surface-lowest: #181211;
   --color-surface-inverse: #eee9e7;
-}
+} */

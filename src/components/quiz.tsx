@@ -3,6 +3,7 @@ import './quiz.css';
 import CorrectAnswerIcon from '@/assets/icons/correct-answer';
 import WrongAnswerIcon from '@/assets/icons/wrong-answer';
 import Bunny from './bunny';
+import { useWpm } from '@/hooks/useWpm';
 
 export interface QuizQuestion {
   question: string;
