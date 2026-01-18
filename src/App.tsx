@@ -29,9 +29,12 @@ function App() {
   return (
     <>
       <main className="flex flex-col items-center justify-center min-w-screen min-h-screen">
-        <div className="h-[120px] flex gap-3 w-full items-center justify-center">
+        <div className="h-[120px] flex flex-col gap-3 w-full items-center justify-center">
           <Bunny />
-          <span className="font-serif text-2xl text-on font-medium leading-none">appName</span>
+          <span className="font-serif text-2xl text-on font-medium leading-none">
+            Welcome to Books Bunny!
+          </span>
+          <div>Upload a PDF or EPUB to get started.</div>
         </div>
 
         <Tabs
