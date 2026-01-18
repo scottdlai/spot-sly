@@ -22,6 +22,10 @@ function App() {
     return <UploadedFile result={result} onBack={() => setResult(null)} />;
   }
 
+  if (isUploading) {
+    return null;
+  }
+
   return (
     <>
       <main className="flex flex-col items-center justify-center min-w-screen min-h-screen">
@@ -67,6 +71,12 @@ function App() {
               <ReadingControls
                 hasTextSelected={hasTextSelected}
                 noTextHint="Enter text to start reading"
+                onStartReading={() =>
+                  setResult({
+                    name: '',
+                    sections: [{ text: textareaValue, title: 'TEXT' }]
+                  })
+                }
               />
             </div>
           </TabsContent>
