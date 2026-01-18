@@ -8,16 +8,11 @@ import LastSentenceIcon from '@/assets/icons/last-sentence';
 import LastWordIcon from '@/assets/icons/last-word';
 import Quiz from '@/components/quiz';
 import { WpmPopover } from '@/components/wpm-popover';
+import PauseIcon from '@/assets/icons/pause';
 
 interface TokenProps {
   token: string;
   highlightIndex: number;
-}
-
-function getHighlightIndex(token: string): number {
-  let mid = Math.floor(token.length / 2);
-  mid = token.length % 2 !== 0 ? mid : mid - 1;
-  return Math.min(2, mid);
 }
 
 export interface SpeedReaderComponentProps {
@@ -26,13 +21,20 @@ export interface SpeedReaderComponentProps {
   onWpsChange: (wpsChange: (delta: number) => number) => void;
 }
 
+function getHighlightIndex(token: string): number {
+  let mid = Math.floor(token.length / 2);
+  mid = token.length % 2 !== 0 ? mid : mid - 1;
+  return Math.min(2, mid);
+}
+
 function SpeedReaderComponent({ text, wps, onWpsChange }: SpeedReaderComponentProps) {
   const tokens = text.split(' ');
 
   const [currIndex, setCurrIndex] = useState<number>(0);
+  const [isPaused, setIsPaused] = useState<boolean>(false);
 
   useEffect(() => {
-    if (wps === 0) {
+    if (wps === 0 || isPaused) {
       return;
     }
 
@@ -50,7 +52,7 @@ function SpeedReaderComponent({ text, wps, onWpsChange }: SpeedReaderComponentPr
     return () => {
       clearInterval(timer);
     };
-  }, [setCurrIndex, currIndex, wps, tokens.length]);
+  }, [setCurrIndex, currIndex, wps, tokens.length, isPaused]);
 
   const endOfText = currIndex >= tokens.length;
 
@@ -84,8 +86,12 @@ function SpeedReaderComponent({ text, wps, onWpsChange }: SpeedReaderComponentPr
               <button>
                 <LastWordIcon className="text-on-subtle"></LastWordIcon>
               </button>
-              <button>
-                <PlayIcon className="text-on-subtle pl-0.5 scale-125" />
+              <button onClick={() => setIsPaused(!isPaused)}>
+                {isPaused ? (
+                  <PlayIcon className="text-on-subtle pl-0.5 scale-125" />
+                ) : (
+                  <PauseIcon className="text-on-subtle pl-0.5 scale-125" />
+                )}
               </button>
               <button>
                 <NextWordIcon className="text-on-subtle"></NextWordIcon>
