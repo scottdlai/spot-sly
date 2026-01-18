@@ -27,6 +27,35 @@ export interface SpeedReaderComponentProps {
 
 const PAUSE_TIMEOUT_IN_MS = 3_000;
 
+const mockQuiz: QuizQuestion[] = [
+  {
+    question:
+      'According to the passage, why have manufacturers stopped trying to increase the clock speed of processors?',
+    options: [
+      'The industry has shifted focus entirely to mobile devices.',
+      'Moores Law has been repealed, making it physically impossible.',
+      'Increasing clock speed causes the processors to overheat.',
+      'There is no longer a demand for faster computing tasks.'
+    ],
+    correctAnswerIndex: 2
+  },
+  {
+    question: 'Which component is responsible for executing instructions in a CPU?',
+    options: ['ALU', 'Cache', 'Control Unit', 'Registers'],
+    correctAnswerIndex: 0
+  },
+  {
+    question: 'What is the primary purpose of a computer cache?',
+    options: [
+      'Store large files permanently',
+      'Speed up access to frequently used data',
+      'Manage power consumption',
+      'Handle network traffic'
+    ],
+    correctAnswerIndex: 1
+  }
+];
+
 function getHighlightIndex(token: string): number {
   let mid = Math.floor(token.length / 2);
   mid = token.length % 2 !== 0 ? mid : mid - 1;
@@ -130,9 +159,8 @@ function SpeedReaderComponent({ text, wps, onWpsChange, back }: SpeedReaderCompo
         text +
         +' Return strictly valid JSON matching the provided schema. Do not include introductory text like Here is your quiz.';
 
-      console.log(prompt);
-
       setIsLoading(true);
+      setQuestions([]);
 
       try {
         const response = await ai.models.generateContent({
@@ -148,13 +176,16 @@ function SpeedReaderComponent({ text, wps, onWpsChange, back }: SpeedReaderCompo
         if (response.text) {
           setQuestions(JSON.parse(response.text)?.questions ?? []);
         }
+      } catch (e) {
+        // setQuestions(mockQuiz);
+        console.error(e);
       } finally {
         setIsLoading(false);
       }
     }
 
     getQuizQuestions();
-  }, [endOfText]);
+  }, [endOfText, text]);
 
   if (endOfText) {
     return isLoading ? (
