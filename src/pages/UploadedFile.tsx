@@ -30,6 +30,7 @@ export default function UploadedFile({
   );
 
   const [wps, setWps] = useState<number>(600 / 60);
+  const wpm = wps * 60;
 
   const [startReading, setStartReading] = useState<boolean>(false);
 
@@ -159,7 +160,11 @@ export default function UploadedFile({
 
         <ReadingControls
           hasTextSelected={hasTextSelected}
-          wpm={wps}
+          wpm={wpm}
+          onWpmChange={(wpmChange) => {
+            // Convert WPM change function to WPS change
+            setWps(wps => wpmChange(wps * 60) / 60);
+          }}
           onStartReading={() => {
             setStartReading(true);
           }}

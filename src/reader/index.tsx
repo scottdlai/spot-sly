@@ -7,8 +7,7 @@ import NextSentenceIcon from '@/assets/icons/next-sentence';
 import LastSentenceIcon from '@/assets/icons/last-sentence';
 import LastWordIcon from '@/assets/icons/last-word';
 import Quiz from '@/components/quiz';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Minus, Plus } from 'lucide-react';
+import { WpmPopover } from '@/components/wpm-popover';
 
 interface TokenProps {
   token: string;
@@ -91,55 +90,19 @@ function SpeedReaderComponent({ text, wps, onWpsChange }: SpeedReaderComponentPr
                 <NextSentenceIcon className="text-on-subtle"></NextSentenceIcon>
               </button>
             </div>
-            <Popover>
-              <PopoverTrigger asChild>
+
+            <WpmPopover
+              wpm={wpm}
+              onWpmChange={(wpmChange) => {
+                // Convert WPM change function to WPS change
+                onWpsChange(wps => wpmChange(wps * 60) / 60);
+              }}
+              trigger={
                 <button className="w-[32px] h-[32px] aspect-square">
                   <span className="text-xs text-on-subtle">{wpm}</span>
                 </button>
-              </PopoverTrigger>
-
-              {/* The "Toast" Content positioned above */}
-              <PopoverContent
-                side="top"
-                sideOffset={12}
-                className="bg-[#4a3f3b] border-none rounded-2xl px-1 w-48 shadow-2xl"
-              >
-                <div className="space-y-4">
-                  <p className="text-[#d9c5b2]/70 text-sm font-medium px-1">Change reading speed</p>
-
-                  <div className="h-6 flex items-center justify-center gap-0">
-                    {/* Decrease Button */}
-                    <button
-                      onClick={() => onWpsChange(wps => wps - 1)}
-                      className="flex items-center gap-1 text-[#d9c5b2] hover:text-white transition-colors"
-                    >
-                      <Minus className="w-2 h-2" />
-                      <span className="text-sm font-medium">60</span>
-                    </button>
-
-                    {/* Center Display */}
-                    <div className="flex-1 bg-[#63554f] rounded-lg p-2 flex items-center justify-center gap-1">
-                      <span className="text-[#d9c5b2]/50 text-sm font-bold uppercase tracking-wider">
-                        WPM
-                      </span>
-                      <span className="text-white text-sm font-semibold">{wpm}</span>
-                    </div>
-
-                    {/* Increase Button */}
-                    <button
-                      onClick={() => onWpsChange(wps => wps + 1)}
-                      className="flex items-center gap-1 text-[#d9c5b2] hover:text-white transition-colors"
-                    >
-                      <Plus className="w-2 h-2" />
-                      <span className="text-sm font-medium">60</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Custom Arrow/Caret */}
-                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#4a3f3b] rotate-45" />
-              </PopoverContent>
-            </Popover>
+              }
+            />
           </div>
         </div>
         <Slider
