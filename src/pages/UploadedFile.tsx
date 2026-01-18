@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { TreeView, type TreeDataItem } from '@/components/tree-view'
 import responseData from '@/assets/response.json'
 
@@ -13,6 +13,57 @@ export default function UploadedFile() {
     const [selectedSection, setSelectedSection] = useState<Section | null>(
         responseData.sections[0] || null
     )
+
+    // State to track if scrolled to bottom
+    const [isAtBottom, setIsAtBottom] = useState(false)
+
+    // State to track if text is selected
+    const [hasTextSelected, setHasTextSelected] = useState(false)
+
+    // Check for text selection
+    useEffect(() => {
+        const checkSelection = () => {
+            const selection = window.getSelection()
+            const hasSelection = selection && selection.toString().trim().length > 0
+            setHasTextSelected(!!hasSelection)
+        }
+
+        // Check selection on mouseup and selectionchange events
+        document.addEventListener('mouseup', checkSelection)
+        document.addEventListener('selectionchange', checkSelection)
+
+        return () => {
+            document.removeEventListener('mouseup', checkSelection)
+            document.removeEventListener('selectionchange', checkSelection)
+        }
+    }, [])
+
+    // Check scroll position
+    useEffect(() => {
+        const handleScroll = () => {
+            const windowHeight = window.innerHeight
+            const documentHeight = document.documentElement.scrollHeight
+            const scrollTop = window.scrollY || document.documentElement.scrollTop
+            const scrollBottom = scrollTop + windowHeight
+
+            // Check if scrolled to bottom (with a small threshold for edge cases)
+            const threshold = 10 // pixels from bottom
+            const atBottom = scrollBottom >= documentHeight - threshold
+            setIsAtBottom(atBottom)
+        }
+
+        // Check initial scroll position
+        handleScroll()
+
+        // Add scroll event listener
+        window.addEventListener('scroll', handleScroll, { passive: true })
+        window.addEventListener('resize', handleScroll, { passive: true })
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+            window.removeEventListener('resize', handleScroll)
+        }
+    }, [selectedSection]) // Re-check when section changes (content height may change)
 
     // Transform sections from JSON into TreeDataItem format
     const treeData: TreeDataItem[] = responseData.sections.map((section, index) => ({
@@ -53,10 +104,12 @@ export default function UploadedFile() {
                 />
             </div>
 
-            <main className="col-span-3 w-full flex flex-col items-center gap-10 *:w-full *:max-w-xl">
-                {/* OVERLAY */}
-                <div className="select-none gradient-overlay w-full max-w-full absolute h-1/4 bg-red-50 bottom-0 fixed">
-                </div>
+            <main className="col-span-3 w-full flex flex-col items-center gap-10 *:w-full *:max-w-xl pb-16">
+                {/* OVERLAY - Only show when not at bottom */}
+                {!isAtBottom && (
+                    <div id="gradient-overlay" className="select-none gradient-overlay w-full max-w-full absolute h-1/4 bottom-0 fixed">
+                    </div>
+                )}
 
 
                 {selectedSection && (
@@ -81,9 +134,16 @@ export default function UploadedFile() {
                         <button className="bg-surface-med flex gap-2.5">
                             <span className="text-primary">500 WPM</span>
                             <span className="text-on">Change</span></button>
-                        <button className="bg-surface-med text-on-disabled">Start reading</button>
+                        <button
+                            id='start-reading'
+                            className={`flex gap-2.5 ${hasTextSelected ? 'bg-primary text-on-primary' : 'bg-surface-med text-on-disabled'}`}
+                        >
+                            Start reading
+                        </button>
                     </div>
-                    <span className="subhead select-none text-on-subtle">Highlight a section to start reading!</span>
+                    <span id="start-reading-hint" className="subhead select-none text-on-subtle">
+                        {hasTextSelected ? 'Ready to read!' : 'Highlight a section to start reading!'}
+                    </span>
                 </div>
             </main>
         </div>

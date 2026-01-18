@@ -5,11 +5,11 @@ import { cva } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const treeVariants = cva(
-    'group hover:before:bg-secondary-subtle before:absolute before:rounded-lg before:left-0 px-2 before:w-full before:h-[2rem] before:-z-10'
+    'group transition-all hover:before:bg-secondary-subtle/25 before:absolute before:rounded-lg before:left-0 px-2 before:w-full before:h-[2rem] before:-z-10'
 )
 
 const selectedTreeVariants = cva(
-    'before:opacity-100 before:bg-secondary hover:before:bg-primary text-on'
+    'before:opacity-100 before:bg-secondary/50 hover:before:bg-secondary text-on'
 )
 
 const dragOverVariants = cva(
@@ -330,7 +330,7 @@ const TreeNode = ({
                                 isOpen={isOpen}
                                 default={defaultNodeIcon}
                             />
-                            <span className="text-sm truncate">{item.name}</span>
+                            <span className="text-xs">{item.name}</span>
                             <TreeActions isSelected={isSelected}>
                                 {item.actions}
                             </TreeActions>
@@ -459,7 +459,7 @@ const TreeLeaf = React.forwardRef<
                             isSelected={isSelected}
                             default={defaultLeafIcon}
                         />
-                        <span className="flex-grow text-sm truncate">{item.name}</span>
+                        <span className="flex-grow text-xs">{item.name}</span>
                         <TreeActions isSelected={isSelected && !item.disabled}>
                             {item.actions}
                         </TreeActions>
@@ -498,7 +498,7 @@ const AccordionContent = React.forwardRef<
     <AccordionPrimitive.Content
         ref={ref}
         className={cn(
-            'overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down',
+            'overflow-hidden text-xs transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down',
             className
         )}
         {...props}
