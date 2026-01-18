@@ -103,7 +103,6 @@ export default function UploadedFile({
       <SpeedReaderComponent
         sectionTitle={selectedSection.title}
         text={selectedSection.text}
-        wps={wpm}
         onWpsChange={setWpm}
         back={cancelCurrentBook}
       />
@@ -166,11 +165,6 @@ export default function UploadedFile({
 
         <ReadingControls
           hasTextSelected={hasTextSelected}
-          wpm={wpm}
-          onWpmChange={wpmChange => {
-            // Convert WPM change function to WPS change
-            setWpm(wps => wpmChange(wps * 60) / 60);
-          }}
           onStartReading={() => {
             setStartReading(true);
           }}

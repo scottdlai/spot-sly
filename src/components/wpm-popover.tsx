@@ -1,20 +1,19 @@
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { useWpm } from '@/hooks/useWpm';
 import { Minus, Plus } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 interface WpmPopoverProps {
-  wpm: number;
-  onWpmChange: (wpmChange: (wpm: number) => number) => void;
   trigger: ReactNode;
   step?: number;
 }
 
-export function WpmPopover({ wpm, onWpmChange, trigger, step = 60 }: WpmPopoverProps) {
+export function WpmPopover({ trigger, step = 60 }: WpmPopoverProps) {
+  const { wpm, setWpm } = useWpm();
+
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        {trigger}
-      </PopoverTrigger>
+      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
 
       <PopoverContent
         side="top"
@@ -28,7 +27,7 @@ export function WpmPopover({ wpm, onWpmChange, trigger, step = 60 }: WpmPopoverP
             {/* Decrease Button */}
             <button
               type="button"
-              onClick={() => onWpmChange(wpm => wpm - step)}
+              onClick={() => setWpm(wpm => wpm - step)}
               className="flex items-center gap-1 text-on transition-colors bg-surface-hi/50 hover:bg-surface-hi rounded-lg !px-3"
             >
               <Minus className="w-4 h-4" />
@@ -37,16 +36,14 @@ export function WpmPopover({ wpm, onWpmChange, trigger, step = 60 }: WpmPopoverP
 
             {/* Center Display */}
             <div className="flex-1 bg-surface-hi rounded-lg p-2 flex items-center justify-center gap-1">
-              <span className="text-on-subtle text-sm font-bold uppercase tracking-wider">
-                WPM
-              </span>
+              <span className="text-on-subtle text-sm font-bold uppercase tracking-wider">WPM</span>
               <span className="text-on text-sm font-semibold">{wpm}</span>
             </div>
 
             {/* Increase Button */}
             <button
               type="button"
-              onClick={() => onWpmChange(wpm => wpm + step)}
+              onClick={() => setWpm(wpm => wpm + step)}
               className="flex items-center gap-1 text-on transition-colors bg-surface-hi/50 hover:bg-surface-hi rounded-lg !px-3"
             >
               <Plus className="w-4 h-4" />

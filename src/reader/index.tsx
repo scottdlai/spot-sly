@@ -29,7 +29,6 @@ interface TokenProps {
 export interface SpeedReaderComponentProps {
   sectionTitle: string;
   text: string;
-  wps: number;
   onWpsChange: (wpsChange: (curWps: number) => number) => void;
   back: () => void;
 }
@@ -89,7 +88,7 @@ function SpeedReaderComponent({
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const { wpm, setWpm } = useWpm();
+  const { wpm } = useWpm();
 
   // Use WPM from localStorage, convert to WPS for reading speed
   const currentWps = wpm / 60;
@@ -208,6 +207,8 @@ function SpeedReaderComponent({
     getQuizQuestions();
   }, [endOfText, text]);
 
+  const { setWpm } = useWpm();
+
   if (endOfText) {
     return isLoading ? (
       <div className='flex flex-col gap-1.5 justify-center items-center min-w-screen min-h-screen'>
@@ -216,11 +217,11 @@ function SpeedReaderComponent({
       </div>
     ) : (
       <Quiz
-        wps={wpm}
+        wpm={wpm}
         questions={questions}
         retryAtSlowerSpeed={() => {
           setCurrIndex(0);
-          onWpsChange(wps => wps - 1);
+          setWpm(wpm - 60);
         }}
         readAnotherPassage={() => back()}
       />
@@ -313,11 +314,6 @@ function SpeedReaderComponent({
               </div>
 
               <WpmPopover
-                wpm={wpm}
-                onWpmChange={wpmChange => {
-                  // Convert WPM change function to WPS change
-                  onWpsChange(wps => wpmChange(wps * 60) / 60);
-                }}
                 trigger={
                   <button className="w-[32px] h-[32px] aspect-square">
                     <span className="text-xs text-on-subtle">{wpm}</span>
