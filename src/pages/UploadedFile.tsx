@@ -29,7 +29,7 @@ export default function UploadedFile({
     responseData.sections[0] || null
   );
 
-  const [wpm, setWpm] = useState<number>(600 / 60);
+  const [wps, setWps] = useState<number>(600 / 60);
 
   const [startReading, setStartReading] = useState<boolean>(false);
 
@@ -100,7 +100,7 @@ export default function UploadedFile({
   }
 
   if (startReading && hasTextSelected) {
-    return <SpeedReaderComponent text={selectedSection.text} wps={wpm} />;
+    return <SpeedReaderComponent text={selectedSection.text} wps={wps} onWpsChange={setWps} />;
   }
 
   return (
@@ -159,7 +159,7 @@ export default function UploadedFile({
 
         <ReadingControls
           hasTextSelected={hasTextSelected}
-          wpm={wpm}
+          wpm={wps}
           onStartReading={() => {
             setStartReading(true);
           }}
