@@ -75,16 +75,6 @@ export default function UploadedFile({ result: responseData }: UploadedFileProps
         };
     }, [selectedSection]); // Re-check when section changes (content height may change)
 
-    // Validate that result has sections (after hooks)
-    if (!responseData || !responseData.sections || responseData.sections.length === 0) {
-        console.error('Invalid result data:', responseData);
-        return (
-            <div className="flex items-center justify-center min-h-screen">
-                <div className="text-on">No sections available to display.</div>
-            </div>
-        );
-    }
-
     // Transform sections from JSON into TreeDataItem format
     const treeData: TreeDataItem[] = responseData.sections.map((section, index) => ({
         id: `section-${index}`,
