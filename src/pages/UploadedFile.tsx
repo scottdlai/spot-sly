@@ -161,7 +161,7 @@ export default function UploadedFile({
         <ReadingControls
           hasTextSelected={hasTextSelected}
           wpm={wpm}
-          onWpmChange={(wpmChange) => {
+          onWpmChange={wpmChange => {
             // Convert WPM change function to WPS change
             setWps(wps => wpmChange(wps * 60) / 60);
           }}

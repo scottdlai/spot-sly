@@ -1,6 +1,7 @@
 import { Card } from '@/components/ui/card';
 import { Upload } from 'lucide-react';
 import { useRef, useState } from 'react';
+import { initEpubFile } from '@lingo-reader/epub-parser';
 
 export interface FileUploadResult {
   sections: {
@@ -38,6 +39,11 @@ export function FileUpload({
     if (!file) {
       return;
     }
+
+    const book = await initEpubFile(file);
+    const spine = book.getSpine();
+    console.log(spine);
+    return;
 
     setIsUploading(true);
     setError(null);
