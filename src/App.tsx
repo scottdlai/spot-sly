@@ -13,14 +13,14 @@ function App() {
 
   const [result, setResult] = useState<FileUploadResult | null>(null);
 
+  // State to track if textarea has text
+  const [hasTextSelected, setHasTextSelected] = useState(false);
+  const [textareaValue, setTextareaValue] = useState('');
+
   if (result !== null) {
     console.log('Rendering UploadedFile with result:', result);
     return <UploadedFile result={result} />;
   }
-
-  // State to track if textarea has text
-  const [hasTextSelected, setHasTextSelected] = useState(false);
-  const [textareaValue, setTextareaValue] = useState('');
 
   return (
     <>
@@ -29,7 +29,6 @@ function App() {
           <Bunny />
           <span className="font-serif text-2xl text-on font-medium leading-none">appName</span>
         </div>
-
 
         <Tabs defaultValue="file" className="flex flex-col w-full max-w-[400px] items-center justify-center">
           <TabsList className="bg-surface-low w-full">

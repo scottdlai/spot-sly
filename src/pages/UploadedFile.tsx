@@ -18,19 +18,9 @@ export interface UploadedFileProps {
 export default function UploadedFile({ result: responseData }: UploadedFileProps) {
     console.log('UploadedFile rendered with:', responseData);
 
-    // Validate that result has sections
-    if (!responseData || !responseData.sections || responseData.sections.length === 0) {
-        console.error('Invalid result data:', responseData);
-        return (
-            <div className="flex items-center justify-center min-h-screen">
-                <div className="text-on">No sections available to display.</div>
-            </div>
-        );
-    }
-
     // State to track the selected section
     const [selectedSection, setSelectedSection] = useState<Section | null>(
-        responseData.sections[0] || null
+        responseData?.sections?.[0] || null
     );
 
     // State to track if scrolled to bottom
@@ -83,6 +73,16 @@ export default function UploadedFile({ result: responseData }: UploadedFileProps
             window.removeEventListener('resize', handleScroll);
         };
     }, [selectedSection]); // Re-check when section changes (content height may change)
+
+    // Validate that result has sections (after hooks)
+    if (!responseData || !responseData.sections || responseData.sections.length === 0) {
+        console.error('Invalid result data:', responseData);
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="text-on">No sections available to display.</div>
+            </div>
+        );
+    }
 
     // Transform sections from JSON into TreeDataItem format
     const treeData: TreeDataItem[] = responseData.sections.map((section, index) => ({
