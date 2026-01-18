@@ -1,4 +1,46 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@import './theme.css';
+
+/* Font Face Declarations */
+@font-face {
+  font-family: 'Styrene';
+  src: url('./assets/fonts/StyreneBLC-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('./assets/fonts/TiemposText-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('./assets/fonts/TiemposText-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('./assets/fonts/TiemposText-Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('./assets/fonts/TiemposText-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* Font Face Declarations */
 @font-face {
@@ -43,31 +85,52 @@
 
 @theme {
   /* Primary colors */
-  --color-primary: #CD785C;
-  --color-on-primary: #EEE9E7;
+  --color-primary: var(--color-primary);
+  --color-primary-subtle: var(--color-primary-subtle);
+  --color-on-primary: var(--color-on-primary);
 
   /* Secondary colors */
-  --color-secondary: #402B24;
-  --color-on-secondary: #FFD9CC;
+  --color-secondary: var(--color-secondary);
+  --color-secondary-subtle: var(--color-secondary-subtle);
+  --color-on-secondary: var(--color-on-secondary);
 
   /* Surface colors */
-  --color-surface-lowest: #181211;
-  --color-surface-low: #271E1B;
-  --color-surface-med: #3C2E2A;
-  --color-surface-hi: #5A473F;
-  --color-surface-inverse: #EEE9E7;
+  --color-surface-lowest: var(--color-surface-lowest);
+  --color-surface-lowest-transparent: color-mix(in srgb, var(--color-surface-lowest) 0%, transparent);
+  --color-surface-low: var(--color-surface-low);
+  --color-surface-med: var(--color-surface-med);
+  --color-surface-hi: var(--color-surface-hi);
+  --color-surface-inverse: var(--color-surface-inverse);
 
   /* Text colors */
-  --color-on: #EEE9E7;
-  --color-on-subtle: #C5B4AD;
-  --color-on-disabled: #9B867E;
-  --color-on-inverse: #1E1715;
+  --color-on: var(--color-on);
+  --color-on-subtle: var(--color-on-subtle);
+  --color-on-disabled: var(--color-on-disabled);
+  --color-on-inverse: var(--color-on-inverse);
+}
+
+@layer base {
+  ::selection {
+    background-color: var(--color-secondary);
+    color: var(--color-on);
+  }
+
+  ::-moz-selection {
+    background-color: var(--color-secondary);
+    color: var(--color-on);
+  }
+}
+
+.gradient-overlay {
+  background: linear-gradient(0deg, var(--color-surface-lowest) 0%, var(--color-surface-lowest-transparent) 100%);
 }
 
 body {
-  min-width: 100vw;
+  margin: 0;
+  width: 100svw;
   min-height: 100vh;
-  background-color: var(--color-surface-lowest); 
+  overflow-x: hidden;
+  background-color: var(--color-surface-lowest);
   color: var(--color-on);
   font-family: "Styrene", sans-serif;
 }
@@ -76,3 +139,138 @@ body {
   font-family: "Tiempos Text", serif;
 }
 
+.large-word {
+  font-family: "Tiempos Text";
+  font-size: 8rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100%;
+}
+
+.large-title {
+  font-family: "Tiempos Text";
+  font-size: 2.0625rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 121.212%;
+  letter-spacing: 0.004em;
+}
+
+.title-1 {
+  font-family: "Tiempos Text";
+  font-size: 1.6875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 122.222%;
+  letter-spacing: 0.0029em;
+}
+
+.title-2 {
+  font-family: "Tiempos Text";
+  font-size: 1.3125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 123.81%;
+  letter-spacing: -0.0036em;
+}
+
+.title-3 {
+  font-family: "Tiempos Text", serif;
+  font-size: 1.1875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 126.316%;
+  letter-spacing: -0.0045em;
+}
+
+.headline {
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 131.25%;
+  letter-spacing: -0.0031em;
+}
+
+.paragraph-text {
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 175%;
+  letter-spacing: -0.0031em;
+}
+
+.body-text {
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 131.25%;
+  letter-spacing: -0.0031em;
+}
+
+.callout {
+  font-size: 0.9375rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 133.333%;
+  letter-spacing: -0.0023em;
+}
+
+.subhead {
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 135.714%;
+  letter-spacing: -0.0015em;
+}
+
+.footnote {
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 133.333%;
+}
+
+.caption-1 {
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 118.182%;
+  letter-spacing: 0.0006em;
+}
+
+
+/* Textarea scrollbar styling using App.css theme colors */
+textarea {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-surface-hi) transparent;
+}
+
+textarea::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+  border-radius: var(--radius);
+  background: var(--color-surface-low);
+  border-radius: 4px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: var(--color-surface-hi);
+  border-radius: 4px;
+  border: 1px solid var(--color-surface-low);
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+  background: var(--color-surface-med);
+}
+
+textarea::-webkit-scrollbar-thumb:active {
+  background: var(--color-on-subtle);
+}
+
+/* Active tab border-radius styling */
+[data-slot="tabs-trigger"][data-state="active"] {
+  border-radius: 4px !important;
+}
