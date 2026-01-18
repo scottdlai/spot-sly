@@ -192,6 +192,7 @@ function SpeedReaderComponent({ text, wps, onWpsChange, back }: SpeedReaderCompo
       <h1>Loadding...</h1>
     ) : (
       <Quiz
+        wps={wps}
         questions={questions}
         retryAtSlowerSpeed={() => {
           setCurrIndex(0);
