@@ -11,6 +11,7 @@ import { WpmPopover } from '@/components/wpm-popover';
 import { TextSizePopover } from '@/components/text-size-popover';
 import { ThemePopover } from '@/components/theme-popover';
 import { useTheme } from '@/hooks/useTheme';
+import { useWpm } from '@/hooks/useWpm';
 import PauseIcon from '@/assets/icons/pause';
 import { Undo2 } from 'lucide-react';
 import { Palette } from 'lucide-react';
@@ -33,21 +34,25 @@ function getHighlightIndex(token: string): number {
   return Math.min(2, mid);
 }
 
-function SpeedReaderComponent({ text, wps, onWpsChange }: SpeedReaderComponentProps) {
+function SpeedReaderComponent({ text, wps: _wps, onWpsChange: _onWpsChange }: SpeedReaderComponentProps) {
   const tokens = text.split(' ');
 
   const [currIndex, setCurrIndex] = useState<number>(0);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [textSize, setTextSize] = useState<number>(5);
   const { theme, setTheme } = useTheme();
+  const { wpm, setWpm } = useWpm();
+
+  // Use WPM from localStorage, convert to WPS for reading speed
+  const currentWps = wpm / 60;
 
   useEffect(() => {
-    if (wps === 0 || isPaused) {
+    if (currentWps === 0 || isPaused) {
       return;
     }
 
     // Add a bit of delay at the last word before showing quiz
-    const timeout = currIndex + 1 < tokens.length ? 1000 / wps : 500;
+    const timeout = currIndex + 1 < tokens.length ? 1000 / currentWps : 500;
 
     const timer = setTimeout(() => {
       if (currIndex >= tokens.length) {
@@ -60,15 +65,13 @@ function SpeedReaderComponent({ text, wps, onWpsChange }: SpeedReaderComponentPr
     return () => {
       clearInterval(timer);
     };
-  }, [setCurrIndex, currIndex, wps, tokens.length, isPaused]);
+  }, [setCurrIndex, currIndex, currentWps, tokens.length, isPaused]);
 
   const endOfText = currIndex >= tokens.length;
 
   if (endOfText) {
     return <Quiz />;
   }
-
-  const wpm = wps * 60;
 
   return (
     <div className="reader">
@@ -143,10 +146,7 @@ function SpeedReaderComponent({ text, wps, onWpsChange }: SpeedReaderComponentPr
 
             <WpmPopover
               wpm={wpm}
-              onWpmChange={wpmChange => {
-                // Convert WPM change function to WPS change
-                onWpsChange(wps => wpmChange(wps * 60) / 60);
-              }}
+              onWpmChange={setWpm}
               trigger={
                 <button className="w-[32px] h-[32px] aspect-square">
                   <span className="text-xs text-on-subtle">{wpm}</span>

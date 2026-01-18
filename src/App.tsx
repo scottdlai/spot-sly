@@ -7,6 +7,7 @@ import { FileUpload, type FileUploadResult } from './FileUpload';
 import UploadedFile from './pages/UploadedFile';
 import { Textarea } from '@/components/ui/textarea';
 import { ReadingControls } from '@/components/reading-controls';
+import { useWpm } from '@/hooks/useWpm';
 
 function App() {
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -16,6 +17,7 @@ function App() {
   // State to track if textarea has text
   const [hasTextSelected, setHasTextSelected] = useState(false);
   const [textareaValue, setTextareaValue] = useState('');
+  const { wpm, setWpm } = useWpm();
 
   if (result !== null) {
     console.log('Rendering UploadedFile with result:', result);
@@ -70,6 +72,8 @@ function App() {
             <div className="w-full absolute bottom-0 fixed left-0">
               <ReadingControls
                 hasTextSelected={hasTextSelected}
+                wpm={wpm}
+                onWpmChange={setWpm}
                 noTextHint="Enter text to start reading"
                 onStartReading={() =>
                   setResult({

@@ -3,6 +3,7 @@ import './quiz.css';
 import CorrectAnswerIcon from '@/assets/icons/correct-answer';
 import WrongAnswerIcon from '@/assets/icons/wrong-answer';
 import Bunny from './bunny';
+import { useWpm } from '@/hooks/useWpm';
 
 export interface QuizQuestion {
     question: string;
@@ -47,6 +48,7 @@ export default function Quiz({ questions = mockQuiz }: QuizProps = {}) {
     const [current, setCurrent] = useState(0);
     const [selected, setSelected] = useState<number | null>(null);
     const [score, setScore] = useState<number>(0);
+    const { wpm, setWpm } = useWpm();
 
     const currentQuestion = questions[current];
     const finished = current >= questions.length;
@@ -79,11 +81,11 @@ export default function Quiz({ questions = mockQuiz }: QuizProps = {}) {
                 </div>
 
                 <p className="text-lg paragraph-text text-on-subtle mb-2">
-                    You answered all {questions.length} questions at 900 WPM! But we don’t actually think you understand what you read 😔
+                    You answered all {questions.length} questions at {wpm} WPM! But we don’t actually think you understand what you read 😔
                 </p>
 
                 <div className='w-full flex flex-col gap-3'>
-                    <button className='w-full px-6 py-3 rounded-md bg-primary text-on disabled:text-on-disabled disabled:bg-surface-low disabled:opacity-40 transition-colors'>Retry at reduced speed</button>
+                    <button className='w-full px-6 py-3 rounded-md bg-primary text-on-primary disabled:text-on-disabled disabled:bg-surface-low disabled:opacity-40 transition-colors'>Retry at reduced speed</button>
                     <button className='w-full px-6 py-3 rounded-md bg-surface-low text-on disabled:text-on-disabled disabled:bg-surface-low disabled:opacity-40 transition-colors'>Read another passage</button>
                 </div>
             </div>
@@ -91,7 +93,7 @@ export default function Quiz({ questions = mockQuiz }: QuizProps = {}) {
     }
 
     return (
-        <div className="min-h-screen *:max-w-lg flex flex-col items-center justify-between text-white p-10">
+        <div className="min-h-screen *:max-w-lg flex flex-col items-center justify-between text-on p-10">
             <div className="flex flex-col items-center justify-center text-center">
                 <p className="text-sm text-on-subtle mb-2">
                     Question {current + 1} of {questions.length}

@@ -5,6 +5,7 @@ import type { FileUploadResult } from '@/FileUpload';
 import { ReadingControls } from '@/components/reading-controls';
 import SpeedReaderComponent from '@/reader';
 import { ArrowLeftIcon } from 'lucide-react';
+import { useWpm } from '@/hooks/useWpm';
 
 type Section = {
   title: string;
@@ -29,8 +30,7 @@ export default function UploadedFile({
     responseData.sections[0] || null
   );
 
-  const [wps, setWps] = useState<number>(600 / 60);
-  const wpm = wps * 60;
+  const { wpm, setWpm } = useWpm();
 
   const [startReading, setStartReading] = useState<boolean>(false);
 
@@ -101,7 +101,7 @@ export default function UploadedFile({
   }
 
   if (startReading && hasTextSelected) {
-    return <SpeedReaderComponent text={selectedSection.text} wps={wps} onWpsChange={setWps} />;
+    return <SpeedReaderComponent text={selectedSection.text} wps={wpm / 60} onWpsChange={() => { }} />;
   }
 
   return (
@@ -161,10 +161,7 @@ export default function UploadedFile({
         <ReadingControls
           hasTextSelected={hasTextSelected}
           wpm={wpm}
-          onWpmChange={(wpmChange) => {
-            // Convert WPM change function to WPS change
-            setWps(wps => wpmChange(wps * 60) / 60);
-          }}
+          onWpmChange={setWpm}
           onStartReading={() => {
             setStartReading(true);
           }}

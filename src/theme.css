@@ -49,15 +49,15 @@
   --color-on-secondary: #d6fec8;
   --color-secondary: #21640f;
   --color-secondary-subtle: #21640f;
-  --color-on: #201a14;
-  --color-on-subtle: #1f1d18;
-  --color-on-disabled: #3b372c;
-  --color-on-inverse: #caa35a;
-  --color-surface-hi: #e8b381;
-  --color-surface-med: #ffe6a7;
-  --color-surface-low: #ffc83c;
-  --color-surface-lowest: #ffbf00;
-  --color-surface-inverse: #fcffe2;
+  --color-on: #27200D;
+  --color-on-subtle: #664900;
+  --color-on-disabled: #997C33;
+  --color-on-inverse: #CAA35A;
+  --color-surface-hi: #FFD5AD;
+  --color-surface-med: #FFDB80;
+  --color-surface-low: #FFCB47;
+  --color-surface-lowest: #FFBF00;
+  --color-surface-inverse: #FCFFE2;
 }
 
 /* Oat-milk Theme */
