@@ -1,4 +1,46 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@import './theme.css';
+
+/* Font Face Declarations */
+@font-face {
+  font-family: 'Styrene';
+  src: url('./assets/fonts/StyreneBLC-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('./assets/fonts/TiemposText-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('./assets/fonts/TiemposText-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('./assets/fonts/TiemposText-Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('./assets/fonts/TiemposText-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* Font Face Declarations */
 @font-face {
@@ -43,25 +85,27 @@
 
 @theme {
   /* Primary colors */
-  --color-primary: #CD785C;
-  --color-on-primary: #EEE9E7;
+  --color-primary: var(--color-primary);
+  --color-primary-subtle: var(--color-primary-subtle);
+  --color-on-primary: var(--color-on-primary);
 
   /* Secondary colors */
-  --color-secondary: #402B24;
-  --color-on-secondary: #FFD9CC;
+  --color-secondary: var(--color-secondary);
+  --color-secondary-subtle: var(--color-secondary-subtle);
+  --color-on-secondary: var(--color-on-secondary);
 
   /* Surface colors */
-  --color-surface-lowest: #181211;
-  --color-surface-low: #271E1B;
-  --color-surface-med: #3C2E2A;
-  --color-surface-hi: #5A473F;
-  --color-surface-inverse: #EEE9E7;
+  --color-surface-lowest: var(--color-surface-lowest);
+  --color-surface-low: var(--color-surface-low);
+  --color-surface-med: var(--color-surface-med);
+  --color-surface-hi: var(--color-surface-hi);
+  --color-surface-inverse: var(--color-surface-inverse);
 
   /* Text colors */
-  --color-on: #EEE9E7;
-  --color-on-subtle: #C5B4AD;
-  --color-on-disabled: #9B867E;
-  --color-on-inverse: #1E1715;
+  --color-on: var(--color-on);
+  --color-on-subtle: var(--color-on-subtle);
+  --color-on-disabled: var(--color-on-disabled);
+  --color-on-inverse: var(--color-on-inverse);
 }
 
 body {
