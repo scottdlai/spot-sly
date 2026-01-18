@@ -2,7 +2,11 @@ import { Card } from '@/components/ui/card';
 import { Upload } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { initEpubFile } from '@lingo-reader/epub-parser';
+import * as pdfjsLib from 'pdfjs-dist';
+import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import type { Section } from '@/pages/UploadedFile';
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 export interface FileUploadResult {
   sections: Section[];
@@ -37,72 +41,105 @@ export function FileUpload({
     try {
       setIsUploading(true);
       setError(null);
-      const parser = new DOMParser();
-      const book = await initEpubFile(file);
-      const spine = book.getSpine();
-      const promises = [];
-      for (const section of spine) {
-        promises.push(book.loadChapter(section.id));
-      }
-      const chapters = await Promise.all(promises);
-      const sections: Section[] = [];
+      if (file.type == 'application/epub+zip') {
+        const parser = new DOMParser();
+        const book = await initEpubFile(file);
+        const spine = book.getSpine();
+        const promises = [];
+        for (const section of spine) {
+          promises.push(book.loadChapter(section.id));
+        }
+        const chapters = await Promise.all(promises);
+        const sections: Section[] = [];
 
-      for (const { html } of chapters) {
-        const doc = parser.parseFromString(html, 'text/html');
+        for (const { html } of chapters) {
+          const doc = parser.parseFromString(html, 'text/html');
 
-        // Remove all anchors first
-        const anchorTags = doc.querySelectorAll('a');
-        anchorTags.forEach(anchor => {
-          const textNode = doc.createTextNode(anchor.textContent || '');
-          anchor.parentNode?.replaceChild(textNode, anchor);
-        });
+          // Remove all anchors first
+          const anchorTags = doc.querySelectorAll('a');
+          anchorTags.forEach(anchor => {
+            const textNode = doc.createTextNode(anchor.textContent || '');
+            anchor.parentNode?.replaceChild(textNode, anchor);
+          });
 
-        // Find all heading elements
-        const headings = doc.querySelectorAll('h1, h2, h3, h4, h5, h6');
+          // Find all heading elements
+          const headings = doc.querySelectorAll('h1, h2, h3, h4, h5, h6');
 
-        // Skip sections with no headings
-        if (!headings.length) {
-          continue;
+          // Skip sections with no headings
+          if (!headings.length) {
+            continue;
+          }
+
+          // Process each heading and collect text until next heading
+          headings.forEach(heading => {
+            const title = heading.textContent?.replace(/\s+/g, ' ').trim() || 'Untitled';
+            const level = heading.tagName as Section['level'];
+
+            // Collect all text nodes between this heading and the next
+            const textParts: string[] = [];
+            let sibling = heading.nextElementSibling;
+
+            while (sibling) {
+              // Stop if we hit the next heading
+              if (/^H[1-6]$/.test(sibling.tagName)) {
+                break;
+              }
+              const text = sibling.textContent?.trim();
+              if (text) {
+                textParts.push(text);
+              }
+              sibling = sibling.nextElementSibling;
+            }
+
+            const text = textParts.join(' ').replace(/\s+/g, ' ').trim();
+
+            // Only add section if it has content
+            if (text) {
+              sections.push({ title, text, level });
+            }
+          });
+        }
+        const uploadResult: FileUploadResult = {
+          sections,
+          name: file.name.replace(/\.epub$/i, '')
+        };
+
+        setResult(uploadResult);
+        if (handleResult) {
+          handleResult(uploadResult);
+        }
+      } else if (file.type == 'application/pdf') {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const sections: Section[] = [];
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const textContent = await page.getTextContent();
+          const text = textContent.items
+            .map(item => ('str' in item ? item.str : ''))
+            .join(' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+          if (text) {
+            sections.push({
+              title: `Page ${i}`,
+              text,
+              level: 'H1'
+            });
+          }
         }
 
-        // Process each heading and collect text until next heading
-        headings.forEach(heading => {
-          const title = heading.textContent?.replace(/\s+/g, ' ').trim() || 'Untitled';
-          const level = heading.tagName as Section['level'];
+        const uploadResult: FileUploadResult = {
+          sections,
+          name: file.name.replace(/\.pdf$/i, '')
+        };
 
-          // Collect all text nodes between this heading and the next
-          const textParts: string[] = [];
-          let sibling = heading.nextElementSibling;
-
-          while (sibling) {
-            // Stop if we hit the next heading
-            if (/^H[1-6]$/.test(sibling.tagName)) {
-              break;
-            }
-            const text = sibling.textContent?.trim();
-            if (text) {
-              textParts.push(text);
-            }
-            sibling = sibling.nextElementSibling;
-          }
-
-          const text = textParts.join(' ').replace(/\s+/g, ' ').trim();
-
-          // Only add section if it has content
-          if (text) {
-            sections.push({ title, text, level });
-          }
-        });
-      }
-
-      const uploadResult: FileUploadResult = {
-        sections,
-        name: file.name.replace(/\.epub$/i, '')
-      };
-
-      setResult(uploadResult);
-      if (handleResult) {
-        handleResult(uploadResult);
+        setResult(uploadResult);
+        if (handleResult) {
+          handleResult(uploadResult);
+        }
       }
     } catch (err: unknown) {
       setError((err as Error).message);
@@ -129,7 +166,7 @@ export function FileUpload({
           id="files"
           ref={fileInputRef}
           type="file"
-          accept=".epub"
+          accept=".epub, .pdf"
           onChange={handleFileChange}
           className="hidden"
         />
