@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import './index.css';
-import { Slider } from "@/components/ui/slider";
+import { Slider } from '@/components/ui/slider';
 
-const testText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In consequat est est. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec convallis, quam eget bibendum ultricies, nisl ante porta mi, rutrum posuere sem nisl vel est. Vivamus efficitur iaculis dignissim. Etiam egestas consectetur posuere. Aenean eu magna eu sapien mollis fringilla. Praesent est ligula, dignissim id malesuada vitae, consectetur eget arcu. Etiam a neque et justo posuere pharetra non blandit risus. Duis fringilla libero vitae nisl egestas elementum. Donec ut suscipit nunc, id imperdiet ipsum. Integer vel placerat felis, eget consectetur lorem. Nam mi purus, egestas sit amet ultrices venenatis, accumsan in purus. Nullam id leo vel enim aliquam congue. Morbi urna est, viverra vitae mattis suscipit, efficitur non est. Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+const testText =
+  'The Project Gutenberg EBook of Alice in Wonderland by Lewis Carroll. This eBook is for the use of anyone anywhere at no cost and with almost no restrictions whatsoever. You may copy it give it away or reuse it under the terms of the Project Gutenberg License included with this eBook or online at www.gutenberg.org Title Alice in Wonderland Author Lewis Carroll Language English';
 
-const tokens = testText.split(" ");
+const tokens = testText.split(' ');
 const wps = 600 / 60;
 
 interface TokenProps {
@@ -13,8 +14,9 @@ interface TokenProps {
 }
 
 function getHighlightIndex(token: string): number {
-  const mid = Math.floor(token.length / 2);
-  return (token.length % 2 !== 0) ? mid : mid - 1;
+  let mid = Math.floor(token.length / 2);
+  mid = token.length % 2 !== 0 ? mid : mid - 1;
+  return Math.min(2, mid);
 }
 
 function SpeedReaderComponent() {
@@ -22,12 +24,12 @@ function SpeedReaderComponent() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrIndex((prevIndex) => ((prevIndex + 1) % tokens.length));
+      setCurrIndex(prevIndex => (prevIndex + 1) % tokens.length);
     }, 1000 / wps);
 
     return () => {
       clearInterval(timer);
-    }
+    };
   }, []);
 
   return (
@@ -35,10 +37,10 @@ function SpeedReaderComponent() {
       <div className="reader__token">
         <TokenComponent
           token={tokens[currIndex]}
-          highlightIndex={getHighlightIndex(tokens[currIndex])}>
-        </TokenComponent>
+          highlightIndex={getHighlightIndex(tokens[currIndex])}
+        ></TokenComponent>
       </div>
-      <div className="controls rounded-lg flex flex-col gap-2 p-1 min-w-90">
+      <div className="bg-primary rounded-xlg flex flex-col gap-2 p-1 min-w-90">
         <div className="controls__btns">
           <button>A</button>
           <button>B</button>
@@ -46,23 +48,29 @@ function SpeedReaderComponent() {
           <button>D</button>
           <button>E</button>
         </div>
-        <Slider className="control__progress opacity-100" value={[currIndex]} max={tokens.length} disabled></Slider>
+        <Slider
+          className="control__progress opacity-100"
+          value={[currIndex]}
+          max={tokens.length}
+          disabled
+        ></Slider>
       </div>
     </div>
-  )
+  );
 }
 
 function TokenComponent({ token, highlightIndex }: TokenProps) {
-  return (<>
-    {
-      token.split("").map((char, index) => {
-        const style = (index === highlightIndex) ? 'reader__token__hl' : '';
+  const before = token.slice(0, highlightIndex);
+  const highlight = token[highlightIndex];
+  const after = token.slice(highlightIndex + 1);
 
-        return <span key={index} className={style ?? undefined}>{char}</span>
-      })
-    }
-  </>)
+  return (
+    <>
+      <span className="reader__char reader__char--before">{before}</span>
+      <span className="reader__token--hl">{highlight}</span>
+      <span className="reader__char reader__char--after">{after}</span>
+    </>
+  );
 }
-
 
 export default SpeedReaderComponent;
