@@ -3,6 +3,7 @@ import './quiz.css';
 import CorrectAnswerIcon from '@/assets/icons/correct-answer';
 import WrongAnswerIcon from '@/assets/icons/wrong-answer';
 import Bunny from './bunny';
+import { useWpm } from '@/hooks/useWpm';
 
 export interface QuizQuestion {
   question: string;
@@ -12,11 +13,17 @@ export interface QuizQuestion {
 
 export interface QuizProps {
   questions: QuizQuestion[];
+  wps: number;
   retryAtSlowerSpeed: () => void;
   readAnotherPassage: () => void;
 }
 
-export default function Quiz({ questions, retryAtSlowerSpeed, readAnotherPassage }: QuizProps) {
+export default function Quiz({
+  wps,
+  questions,
+  retryAtSlowerSpeed,
+  readAnotherPassage
+}: QuizProps) {
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState<number>(0);
@@ -56,8 +63,8 @@ export default function Quiz({ questions, retryAtSlowerSpeed, readAnotherPassage
         </div>
 
         <p className="text-lg paragraph-text text-on-subtle mb-2">
-          You answered all {questions.length} questions at 900 WPM! But we don’t actually think you
-          understand what you read 😔
+          You answered all {questions.length} questions at {wps * 60} WPM! But we don’t actually
+          think you understand what you read 😔
         </p>
 
         <div className="w-full flex flex-col gap-3">

@@ -29,7 +29,7 @@ export function WpmPopover({ wpm, onWpmChange, trigger, step = 60 }: WpmPopoverP
             <button
               type="button"
               onClick={() => onWpmChange(wpm => wpm - step)}
-              className="flex items-center gap-1 text-on hover:text-white transition-colors bg-surface-hi/50 hover:bg-surface-hi rounded-lg !px-3"
+              className="flex items-center gap-1 text-on transition-colors bg-surface-hi/50 hover:bg-surface-hi rounded-lg !px-3"
             >
               <Minus className="w-4 h-4" />
               <span className="text-sm font-medium">{step}</span>
@@ -47,7 +47,7 @@ export function WpmPopover({ wpm, onWpmChange, trigger, step = 60 }: WpmPopoverP
             <button
               type="button"
               onClick={() => onWpmChange(wpm => wpm + step)}
-              className="flex items-center gap-1 text-on hover:text-white transition-colors bg-surface-hi/50 hover:bg-surface-hi rounded-lg !px-3"
+              className="flex items-center gap-1 text-on transition-colors bg-surface-hi/50 hover:bg-surface-hi rounded-lg !px-3"
             >
               <Plus className="w-4 h-4" />
               <span className="text-sm font-medium">{step}</span>

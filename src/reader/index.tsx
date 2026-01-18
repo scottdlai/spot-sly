@@ -8,10 +8,17 @@ import LastSentenceIcon from '@/assets/icons/last-sentence';
 import LastWordIcon from '@/assets/icons/last-word';
 import Quiz, { type QuizQuestion } from '@/components/quiz';
 import { WpmPopover } from '@/components/wpm-popover';
+import { TextSizePopover } from '@/components/text-size-popover';
+import { ThemePopover } from '@/components/theme-popover';
+import { useTheme } from '@/hooks/useTheme';
+import { useWpm } from '@/hooks/useWpm';
 import PauseIcon from '@/assets/icons/pause';
 import { GoogleGenAI } from '@google/genai';
 import { z } from 'zod/v3';
 import { zodToJsonSchema } from 'zod-to-json-schema';
+import { Undo2 } from 'lucide-react';
+import { Palette } from 'lucide-react';
+import { ALargeSmall } from 'lucide-react';
 
 interface TokenProps {
   token: string;
@@ -62,16 +69,23 @@ function getHighlightIndex(token: string): number {
   return Math.min(2, mid);
 }
 
-function SpeedReaderComponent({ text, wps, onWpsChange, back }: SpeedReaderComponentProps) {
+function SpeedReaderComponent({ text, onWpsChange, back }: SpeedReaderComponentProps) {
   const tokens = text.split(' ');
 
   const [currIndex, setCurrIndex] = useState<number>(0);
   const [isPaused, setIsPaused] = useState<boolean>(true);
+  const [textSize, setTextSize] = useState<number>(5);
+  const { theme, setTheme } = useTheme();
 
   const [showControls, setShowControls] = useState<boolean>(true);
 
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const { wpm, setWpm } = useWpm();
+
+  // Use WPM from localStorage, convert to WPS for reading speed
+  const currentWps = wpm / 60;
 
   // 2. Effect to handle inactivity
   useEffect(() => {
@@ -106,12 +120,12 @@ function SpeedReaderComponent({ text, wps, onWpsChange, back }: SpeedReaderCompo
   }, [isPaused]);
 
   useEffect(() => {
-    if (wps === 0 || isPaused) {
+    if (currentWps === 0 || isPaused) {
       return;
     }
 
     // Add a bit of delay at the last word before showing quiz
-    const timeout = currIndex + 1 < tokens.length ? 1000 / wps : 500;
+    const timeout = currIndex + 1 < tokens.length ? 1000 / currentWps : 500;
 
     const timer = setTimeout(() => {
       if (currIndex >= tokens.length) {
@@ -124,7 +138,7 @@ function SpeedReaderComponent({ text, wps, onWpsChange, back }: SpeedReaderCompo
     return () => {
       clearInterval(timer);
     };
-  }, [setCurrIndex, currIndex, wps, tokens.length, isPaused]);
+  }, [setCurrIndex, currIndex, currentWps, tokens.length, isPaused]);
 
   const endOfText = currIndex >= tokens.length;
 
@@ -192,6 +206,7 @@ function SpeedReaderComponent({ text, wps, onWpsChange, back }: SpeedReaderCompo
       <h1>Loadding...</h1>
     ) : (
       <Quiz
+        wps={wpm}
         questions={questions}
         retryAtSlowerSpeed={() => {
           setCurrIndex(0);
@@ -202,8 +217,6 @@ function SpeedReaderComponent({ text, wps, onWpsChange, back }: SpeedReaderCompo
     );
   }
 
-  const wpm = wps * 60;
-
   const goToTokenAndPause = (token: number | ((curToken: number) => number)) => {
     setIsPaused(true);
     setCurrIndex(token);
@@ -211,14 +224,48 @@ function SpeedReaderComponent({ text, wps, onWpsChange, back }: SpeedReaderCompo
 
   return (
     <div className="reader">
-      <div className="reader__token">
+      <div className="reader__token" style={{ fontSize: `${textSize}rem` }}>
         <TokenComponent
           token={tokens[currIndex]}
           highlightIndex={getHighlightIndex(tokens[currIndex])}
         ></TokenComponent>
       </div>
 
-      <div className="top-controls top-8 w-full flex justify-center"></div>
+      <div className="top-controls w-full flex p-8 absolute top-0 space-between *:w-full">
+        <div>
+          <button>
+            <Undo2 className="text-on-subtle h-5 w-5"></Undo2>
+          </button>
+        </div>
+
+        <div className="flex flex-col text-center gap-1">
+          <span className="text-on">15 min left</span>
+          <span className="text-on-subtle callout">
+            Section in <span id="title">Chapter 1.1 – Shared Objects and Synchronization</span>
+          </span>
+        </div>
+
+        <div className="flex justify-end gap-1.5">
+          <ThemePopover
+            theme={theme}
+            onThemeChange={setTheme}
+            trigger={
+              <button>
+                <Palette className="text-on-subtle h-5 w-5"></Palette>
+              </button>
+            }
+          />
+          <TextSizePopover
+            textSize={textSize}
+            onTextSizeChange={setTextSize}
+            trigger={
+              <button>
+                <ALargeSmall className="text-on-subtle h-5 w-5"></ALargeSmall>
+              </button>
+            }
+          />
+        </div>
+      </div>
 
       {showControls && (
         <div className="bg-primary rounded-xlg flex flex-col gap-2 p-1 min-w-90 bg-surface-low rounded-xl px-3 pt-1 pb-2 absolute bottom-8">
