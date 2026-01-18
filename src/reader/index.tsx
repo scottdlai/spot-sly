@@ -57,7 +57,7 @@ function SpeedReaderComponent({ text, wps, onWpsChange }: SpeedReaderComponentPr
   const endOfText = currIndex >= tokens.length;
 
   if (endOfText) {
-    return <Quiz />;
+    return <Quiz passageText={text} />;
   }
 
   const wpm = wps * 60;
@@ -71,9 +71,7 @@ function SpeedReaderComponent({ text, wps, onWpsChange }: SpeedReaderComponentPr
         ></TokenComponent>
       </div>
 
-      <div className='top-controls top-8 w-full flex justify-center'>
-
-      </div>
+      <div className="top-controls top-8 w-full flex justify-center"></div>
 
       <div className="bg-primary rounded-xlg flex flex-col gap-2 p-1 min-w-90 bg-surface-low rounded-xl px-3 pt-1 pb-2 absolute bottom-8">
         <div className="control__top">
