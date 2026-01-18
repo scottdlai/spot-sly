@@ -14,21 +14,18 @@
 }
 
 .controls {
-  border: 1px solid black;
-  border-radius: 8px;
   padding: 1rem;
-  min-width: 300px;
+  border: 1px solid black;
 }
 
 .controls__btns {
   display: flex;
   justify-content: center;
-  gap: 1rem;
 }
 
 .controls__btns > button {
-  width: 40px;
-  height: 40px;
+  width: 2rem;
+  height: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,4 +36,3 @@
 .controls__btns > div:hover {
   background-color: #f0f0f0;
 }
-

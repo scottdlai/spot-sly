@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import './index.css';
+import { Slider } from "@/components/ui/slider";
 
 const testText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In consequat est est. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec convallis, quam eget bibendum ultricies, nisl ante porta mi, rutrum posuere sem nisl vel est. Vivamus efficitur iaculis dignissim. Etiam egestas consectetur posuere. Aenean eu magna eu sapien mollis fringilla. Praesent est ligula, dignissim id malesuada vitae, consectetur eget arcu. Etiam a neque et justo posuere pharetra non blandit risus. Duis fringilla libero vitae nisl egestas elementum. Donec ut suscipit nunc, id imperdiet ipsum. Integer vel placerat felis, eget consectetur lorem. Nam mi purus, egestas sit amet ultrices venenatis, accumsan in purus. Nullam id leo vel enim aliquam congue. Morbi urna est, viverra vitae mattis suscipit, efficitur non est. Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
 
 const tokens = testText.split(" ");
-const wps = 100 / 60;
+const wps = 600 / 60;
 
 interface TokenProps {
   token: string;
@@ -18,13 +19,11 @@ function getHighlightIndex(token: string): number {
 
 function SpeedReaderComponent() {
   const [currIndex, setCurrIndex] = useState<number>(0);
-  console.log("Made component");
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrIndex((prevIndex) => ((prevIndex + 1) % tokens.length));
     }, 1000 / wps);
-    console.log("Set up interval");
 
     return () => {
       clearInterval(timer);
@@ -39,7 +38,7 @@ function SpeedReaderComponent() {
           highlightIndex={getHighlightIndex(tokens[currIndex])}>
         </TokenComponent>
       </div>
-      <div className="controls">
+      <div className="controls rounded-lg flex flex-col gap-2 p-1 min-w-90">
         <div className="controls__btns">
           <button>A</button>
           <button>B</button>
@@ -47,7 +46,7 @@ function SpeedReaderComponent() {
           <button>D</button>
           <button>E</button>
         </div>
-        <div></div>
+        <Slider className="control__progress opacity-100" value={[currIndex]} max={tokens.length} disabled></Slider>
       </div>
     </div>
   )
