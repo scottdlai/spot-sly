@@ -7,12 +7,6 @@ import NextSentenceIcon from '@/assets/icons/next-sentence';
 import LastSentenceIcon from '@/assets/icons/last-sentence';
 import LastWordIcon from '@/assets/icons/last-word';
 
-const testText =
-  'The Project Gutenberg EBook of Alice in Wonderland by Lewis Carroll. This eBook is for the use of anyone anywhere at no cost and with almost no restrictions whatsoever. You may copy it give it away or reuse it under the terms of the Project Gutenberg License included with this eBook or online at www.gutenberg.org Title Alice in Wonderland Author Lewis Carroll Language English';
-
-const tokens = testText.split(' ');
-const wps = 600 / 60;
-
 interface TokenProps {
   token: string;
   highlightIndex: number;
@@ -24,7 +18,14 @@ function getHighlightIndex(token: string): number {
   return Math.min(2, mid);
 }
 
-function SpeedReaderComponent() {
+export interface SpeedReaderComponentProps {
+  text: string;
+  wps: number;
+}
+
+function SpeedReaderComponent({ text, wps }: SpeedReaderComponentProps) {
+  const tokens = text.split(' ');
+
   const [currIndex, setCurrIndex] = useState<number>(0);
 
   useEffect(() => {
