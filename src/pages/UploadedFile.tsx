@@ -3,6 +3,7 @@ import { TreeView, type TreeDataItem } from '@/components/tree-view';
 // import responseData from '@/assets/response.json';
 import type { FileUploadResult } from '@/FileUpload';
 import { ReadingControls } from '@/components/reading-controls';
+import { ArrowLeftIcon } from 'lucide-react';
 
 type Section = {
     title: string;
@@ -109,18 +110,26 @@ export default function UploadedFile({ result: responseData }: UploadedFileProps
 
     return (
         <div className="grid grid-cols-4 w-full max-w-full overflow-x-hidden gap-8 lg:gap-32 p-4 lg:p-12">
-            <div className="flex flex-col col-span-1 gap-1 select-none" id="tree-structure">
-                <TreeView
-                    data={treeData}
-                    initialSelectedItemId="section-0"
-                    onSelectChange={item => {
-                        // Sync TreeView selection with component state
-                        if (item) {
-                            const sectionIndex = parseInt(item.id.replace('section-', ''));
-                            setSelectedSection(responseData.sections[sectionIndex]);
-                        }
-                    }}
-                />
+            <div className="flex flex-col col-span-1 gap-1 select-none">
+                {/* Return */}
+                <button className='ml-2 w-[32px] h-[32px] icon-button rounded-lg bg-transparent hover:bg-surface-med/75 transition-colors duration-200 ease-in-out'>
+                    <ArrowLeftIcon className="w-4 h-4 mx-auto my-auto text-on-subtle" />
+                </button>
+
+                {/* Tree Structure */}
+                <div id="tree-structure">
+                    <TreeView
+                        data={treeData}
+                        initialSelectedItemId="section-0"
+                        onSelectChange={item => {
+                            // Sync TreeView selection with component state
+                            if (item) {
+                                const sectionIndex = parseInt(item.id.replace('section-', ''));
+                                setSelectedSection(responseData.sections[sectionIndex]);
+                            }
+                        }}
+                    />
+                </div>
             </div>
 
             <main className="col-span-3 w-full flex flex-col items-center gap-10 *:w-full *:max-w-xl pb-16">
