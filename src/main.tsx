@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
-import { BrowserRouter, Routes, Route } from 'react-router';
+import { HashRouter, Routes, Route } from 'react-router';
 import Quiz from './components/quiz.tsx';
 
 // Initialize theme from localStorage before React renders
@@ -13,12 +13,12 @@ document.documentElement.setAttribute('data-theme', storedTheme);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<App />}></Route>
         {/* <Route path="/quiz" element={<Quiz />}></Route> */}
         {/* <Route path="/uploaded" element={<UploadedFile />}></Route> */}
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </StrictMode>
 );
