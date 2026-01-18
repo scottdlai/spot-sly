@@ -194,41 +194,43 @@ function SpeedReaderComponent({
         ></TokenComponent>
       </div>
 
-      <div className="top-controls w-full flex p-8 absolute top-0 space-between *:w-full">
-        <div>
-          <button>
-            <Undo2 className="text-on-subtle h-5 w-5"></Undo2>
-          </button>
-        </div>
+      {showControls && (
+        <div className="top-controls w-full flex p-8 absolute top-0 space-between *:w-full">
+          <div>
+            <button>
+              <Undo2 className="text-on-subtle h-5 w-5"></Undo2>
+            </button>
+          </div>
 
-        <div className="flex flex-col text-center gap-1">
-          <span className="text-on">{Math.ceil((tokens.length - currIndex) / wpm)} min left</span>
-          <span className="text-on-subtle callout">
-            Section in <span id="title">{sectionTitle}</span>
-          </span>
-        </div>
+          <div className="flex flex-col text-center gap-1">
+            <span className="text-on">{Math.ceil((tokens.length - currIndex) / wpm)} min left</span>
+            <span className="text-on-subtle callout">
+              Section in <span id="title">{sectionTitle}</span>
+            </span>
+          </div>
 
-        <div className="flex justify-end gap-1.5">
-          <ThemePopover
-            theme={theme}
-            onThemeChange={setTheme}
-            trigger={
-              <button>
-                <Palette className="text-on-subtle h-5 w-5"></Palette>
-              </button>
-            }
-          />
-          <TextSizePopover
-            textSize={textSize}
-            onTextSizeChange={setTextSize}
-            trigger={
-              <button>
-                <ALargeSmall className="text-on-subtle h-5 w-5"></ALargeSmall>
-              </button>
-            }
-          />
+          <div className="flex justify-end gap-1.5">
+            <ThemePopover
+              theme={theme}
+              onThemeChange={setTheme}
+              trigger={
+                <button>
+                  <Palette className="text-on-subtle h-5 w-5"></Palette>
+                </button>
+              }
+            />
+            <TextSizePopover
+              textSize={textSize}
+              onTextSizeChange={setTextSize}
+              trigger={
+                <button>
+                  <ALargeSmall className="text-on-subtle h-5 w-5"></ALargeSmall>
+                </button>
+              }
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {showControls && (
         <div className="bg-primary rounded-xlg flex flex-col gap-2 p-1 min-w-90 bg-surface-low rounded-xl px-3 pt-1 pb-2 absolute bottom-8">

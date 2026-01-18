@@ -48,7 +48,8 @@ export default function Quiz({
   };
 
   if (finished) {
-    const percentage = (score / questions.length).toLocaleString(undefined, { style: 'percent' });
+    const percentageNumeric = questions.length > 0 ? score / questions.length : 0;
+    const percentage = percentageNumeric.toLocaleString(undefined, { style: 'percent' });
 
     return (
       <div className="min-h-screen flex flex-col gap-6 items-center justify-center p-10 *:max-w-md text-center">
@@ -63,17 +64,19 @@ export default function Quiz({
         </div>
 
         <p className="text-lg paragraph-text text-on-subtle mb-2">
-          You answered all {questions.length} questions at {wpm} WPM! But we don’t actually think
-          you understand what you read 😔
+          You answered all {questions.length} questions at {wpm} WPM! {percentageNumeric < 0.5 && (<span>But we don’t actually think
+            you understand what you read 😔</span>)}
         </p>
 
         <div className="w-full flex flex-col gap-3">
-          <button
-            className="w-full px-6 py-3 rounded-md bg-primary text-on disabled:text-on-disabled disabled:bg-surface-low disabled:opacity-40 transition-colors"
-            onClick={retryAtSlowerSpeed}
-          >
-            Retry at reduced speed
-          </button>
+          {percentageNumeric < 0.5 && (
+            <button
+              className="w-full px-6 py-3 rounded-md bg-primary text-on disabled:text-on-disabled disabled:bg-surface-low disabled:opacity-40 transition-colors"
+              onClick={retryAtSlowerSpeed}
+            >
+              Retry at reduced speed
+            </button>
+          )}
           <button
             className="w-full px-6 py-3 rounded-md bg-surface-low text-on disabled:text-on-disabled disabled:bg-surface-low disabled:opacity-40 transition-colors"
             onClick={readAnotherPassage}
