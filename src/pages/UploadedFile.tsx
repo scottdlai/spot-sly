@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { TreeView, type TreeDataItem } from '@/components/tree-view';
 // import responseData from '@/assets/response.json';
 import type { FileUploadResult } from '@/FileUpload';
+import { ReadingControls } from '@/components/reading-controls';
 
 type Section = {
     title: string;
@@ -15,6 +16,18 @@ export interface UploadedFileProps {
 }
 
 export default function UploadedFile({ result: responseData }: UploadedFileProps) {
+    console.log('UploadedFile rendered with:', responseData);
+
+    // Validate that result has sections
+    if (!responseData || !responseData.sections || responseData.sections.length === 0) {
+        console.error('Invalid result data:', responseData);
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="text-on">No sections available to display.</div>
+            </div>
+        );
+    }
+
     // State to track the selected section
     const [selectedSection, setSelectedSection] = useState<Section | null>(
         responseData.sections[0] || null
@@ -137,23 +150,7 @@ export default function UploadedFile({ result: responseData }: UploadedFileProps
                     </>
                 )}
 
-                <div className="w-full flex flex-col gap-2 fixed bottom-4 items-center">
-                    <div className="buttons flex flex-row gap-2.5">
-                        <button className="bg-surface-med flex gap-2.5">
-                            <span className="text-primary">500 WPM</span>
-                            <span className="text-on">Change</span>
-                        </button>
-                        <button
-                            id="start-reading"
-                            className={`flex gap-2.5 ${hasTextSelected ? 'bg-primary text-on-primary' : 'bg-surface-med text-on-disabled'}`}
-                        >
-                            Start reading
-                        </button>
-                    </div>
-                    <span id="start-reading-hint" className="subhead select-none text-on-subtle">
-                        {hasTextSelected ? 'Ready to read!' : 'Highlight a section to start reading!'}
-                    </span>
-                </div>
+                <ReadingControls hasTextSelected={hasTextSelected} />
             </main>
         </div>
     );
