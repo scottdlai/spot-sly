@@ -31,7 +31,7 @@ function SpeedReaderComponent({ text, wps, onWpsChange }: SpeedReaderComponentPr
   const tokens = text.split(' ');
 
   const [currIndex, setCurrIndex] = useState<number>(0);
-  const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [isPaused, setIsPaused] = useState<boolean>(true);
 
   useEffect(() => {
     if (wps === 0 || isPaused) {
@@ -62,6 +62,11 @@ function SpeedReaderComponent({ text, wps, onWpsChange }: SpeedReaderComponentPr
 
   const wpm = wps * 60;
 
+  const goToTokenAndPause = (token: number | ((curToken: number) => number)) => {
+    setIsPaused(true);
+    setCurrIndex(token);
+  };
+
   return (
     <div className="reader">
       <div className="reader__token">
@@ -71,19 +76,20 @@ function SpeedReaderComponent({ text, wps, onWpsChange }: SpeedReaderComponentPr
         ></TokenComponent>
       </div>
 
-      <div className='top-controls top-8 w-full flex justify-center'>
-
-      </div>
+      <div className="top-controls top-8 w-full flex justify-center"></div>
 
       <div className="bg-primary rounded-xlg flex flex-col gap-2 p-1 min-w-90 bg-surface-low rounded-xl px-3 pt-1 pb-2 absolute bottom-8">
         <div className="control__top">
           <div className="controls__btns flex justify-between">
             <div className="w-[32px] h-[32px] aspect-square"></div>
             <div className="flex flex-row gap-0.5 w-full justify-center">
-              <button>
+              <button name="start" onClick={() => goToTokenAndPause(0)}>
                 <LastSentenceIcon className="text-on-subtle"></LastSentenceIcon>
               </button>
-              <button>
+              <button
+                name="previous-token"
+                onClick={() => goToTokenAndPause(currIndex => Math.max(currIndex - 1, 0))}
+              >
                 <LastWordIcon className="text-on-subtle"></LastWordIcon>
               </button>
               <button onClick={() => setIsPaused(!isPaused)}>
@@ -93,10 +99,15 @@ function SpeedReaderComponent({ text, wps, onWpsChange }: SpeedReaderComponentPr
                   <PauseIcon className="text-on-subtle pl-0.5 scale-125" />
                 )}
               </button>
-              <button>
+              <button
+                name="next-token"
+                onClick={() =>
+                  goToTokenAndPause(curIndex => Math.min(curIndex + 1, tokens.length - 1))
+                }
+              >
                 <NextWordIcon className="text-on-subtle"></NextWordIcon>
               </button>
-              <button>
+              <button name="quiz" onClick={() => goToTokenAndPause(tokens.length)}>
                 <NextSentenceIcon className="text-on-subtle"></NextSentenceIcon>
               </button>
             </div>
