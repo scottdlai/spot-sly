@@ -112,12 +112,12 @@
 @layer base {
   ::selection {
     background-color: var(--color-secondary);
-    color: var(--color-on);
+    color: var(--color-on-secondary);
   }
 
   ::-moz-selection {
     background-color: var(--color-secondary);
-    color: var(--color-on);
+    color: var(--color-on-secondary);
   }
 }
 
