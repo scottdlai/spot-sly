@@ -27,8 +27,8 @@ interface TokenProps {
 }
 
 export interface SpeedReaderComponentProps {
+  sectionTitle: string;
   text: string;
-  wps: number;
   onWpsChange: (wpsChange: (curWps: number) => number) => void;
   back: () => void;
 }
@@ -70,7 +70,12 @@ function getHighlightIndex(token: string): number {
   return Math.min(2, mid);
 }
 
-function SpeedReaderComponent({ text, onWpsChange, back }: SpeedReaderComponentProps) {
+function SpeedReaderComponent({
+  sectionTitle,
+  text,
+  onWpsChange,
+  back
+}: SpeedReaderComponentProps) {
   const tokens = text.split(' ');
 
   const [currIndex, setCurrIndex] = useState<number>(0);
@@ -210,11 +215,11 @@ function SpeedReaderComponent({ text, onWpsChange, back }: SpeedReaderComponentP
       </div>
     ) : (
       <Quiz
-        wps={wpm}
+        wpm={wpm}
         questions={questions}
         retryAtSlowerSpeed={() => {
           setCurrIndex(0);
-          onWpsChange(wps => wps - 1);
+          setWpm(wpm - 60);
         }}
         readAnotherPassage={() => back()}
       />
@@ -243,9 +248,9 @@ function SpeedReaderComponent({ text, onWpsChange, back }: SpeedReaderComponentP
         </div>
 
         <div className="flex flex-col text-center gap-1">
-          <span className="text-on">15 min left</span>
+          <span className="text-on">{Math.ceil((tokens.length - currIndex) / wpm)} min left</span>
           <span className="text-on-subtle callout">
-            Section in <span id="title">Chapter 1.1 – Shared Objects and Synchronization</span>
+            Section in <span id="title">{sectionTitle}</span>
           </span>
         </div>
 
@@ -308,10 +313,7 @@ function SpeedReaderComponent({ text, onWpsChange, back }: SpeedReaderComponentP
 
               <WpmPopover
                 wpm={wpm}
-                onWpmChange={wpmChange => {
-                  // Convert WPM change function to WPS change
-                  onWpsChange(wps => wpmChange(wps * 60) / 60);
-                }}
+                setWpm={setWpm}
                 trigger={
                   <button className="w-[32px] h-[32px] aspect-square">
                     <span className="text-xs text-on-subtle">{wpm}</span>
