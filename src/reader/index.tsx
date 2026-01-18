@@ -19,6 +19,7 @@ import { zodToJsonSchema } from 'zod-to-json-schema';
 import { Undo2 } from 'lucide-react';
 import { Palette } from 'lucide-react';
 import { ALargeSmall } from 'lucide-react';
+import Bunny from '@/components/bunny';
 
 interface TokenProps {
   token: string;
@@ -203,7 +204,10 @@ function SpeedReaderComponent({ text, onWpsChange, back }: SpeedReaderComponentP
 
   if (endOfText) {
     return isLoading ? (
-      <h1>Loadding...</h1>
+      <div className='flex flex-col gap-1.5 justify-center items-center min-w-screen min-h-screen'>
+        <Bunny className='text-on-subtle'></Bunny>
+        <p className='text-on-subtle'>Generating quiz...</p>
+      </div>
     ) : (
       <Quiz
         wps={wpm}
