@@ -27,6 +27,7 @@ interface TokenProps {
 }
 
 export interface SpeedReaderComponentProps {
+  sectionTitle: string;
   text: string;
   wps: number;
   onWpsChange: (wpsChange: (curWps: number) => number) => void;
@@ -70,7 +71,12 @@ function getHighlightIndex(token: string): number {
   return Math.min(2, mid);
 }
 
-function SpeedReaderComponent({ text, onWpsChange, back }: SpeedReaderComponentProps) {
+function SpeedReaderComponent({
+  sectionTitle,
+  text,
+  onWpsChange,
+  back
+}: SpeedReaderComponentProps) {
   const tokens = text.split(' ');
 
   const [currIndex, setCurrIndex] = useState<number>(0);
@@ -243,9 +249,9 @@ function SpeedReaderComponent({ text, onWpsChange, back }: SpeedReaderComponentP
         </div>
 
         <div className="flex flex-col text-center gap-1">
-          <span className="text-on">15 min left</span>
+          <span className="text-on">{Math.ceil((tokens.length - currIndex) / wpm)} min left</span>
           <span className="text-on-subtle callout">
-            Section in <span id="title">Chapter 1.1 – Shared Objects and Synchronization</span>
+            Section in <span id="title">{sectionTitle}</span>
           </span>
         </div>
 

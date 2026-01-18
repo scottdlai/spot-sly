@@ -101,6 +101,7 @@ export default function UploadedFile({
   if (startReading && hasTextSelected) {
     return (
       <SpeedReaderComponent
+        sectionTitle={selectedSection.title}
         text={selectedSection.text}
         wps={wpm}
         onWpsChange={setWpm}
