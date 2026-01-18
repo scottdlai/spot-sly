@@ -13,14 +13,14 @@ function App() {
 
   const [result, setResult] = useState<FileUploadResult | null>(null);
 
+  // State to track if textarea has text
+  const [hasTextSelected, setHasTextSelected] = useState(false);
+  const [textareaValue, setTextareaValue] = useState('');
+
   if (result !== null) {
     console.log('Rendering UploadedFile with result:', result);
     return <UploadedFile result={result} />;
   }
-
-  // State to track if textarea has text
-  const [hasTextSelected, setHasTextSelected] = useState(false);
-  const [textareaValue, setTextareaValue] = useState('');
 
   return (
     <>
@@ -30,8 +30,10 @@ function App() {
           <span className="font-serif text-2xl text-on font-medium leading-none">appName</span>
         </div>
 
-
-        <Tabs defaultValue="file" className="flex flex-col w-full max-w-[400px] items-center justify-center">
+        <Tabs
+          defaultValue="file"
+          className="flex flex-col w-full max-w-[400px] items-center justify-center"
+        >
           <TabsList className="bg-surface-low w-full">
             <TabsTrigger value="file">File</TabsTrigger>
             <TabsTrigger value="text">Text</TabsTrigger>
@@ -48,12 +50,12 @@ function App() {
 
           <TabsContent value="text" className="">
             {/* Enter text to read */}
-            <div className='w-full min-w-[400px] min-h-[200px]'>
+            <div className="w-full min-w-[400px] min-h-[200px]">
               <Textarea
-                placeholder='Enter text to read'
-                className='w-full min-w-[400px] h-[200px] max-h-[200px]'
+                placeholder="Enter text to read"
+                className="w-full min-w-[400px] h-[200px] max-h-[200px]"
                 value={textareaValue}
-                onChange={(e) => {
+                onChange={e => {
                   const value = e.target.value;
                   setTextareaValue(value);
                   setHasTextSelected(value.trim().length > 0);
@@ -61,7 +63,7 @@ function App() {
               />
             </div>
 
-            <div className='w-full absolute bottom-0 fixed left-0'>
+            <div className="w-full absolute bottom-0 fixed left-0">
               <ReadingControls
                 hasTextSelected={hasTextSelected}
                 noTextHint="Enter text to start reading"
