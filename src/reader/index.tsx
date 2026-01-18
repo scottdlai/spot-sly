@@ -150,58 +150,15 @@ function SpeedReaderComponent({
 
   useEffect(() => {
     async function getQuizQuestions() {
-      const envApiKey = import.meta.env.VITE_GEMINI_API_KEY;
-      const ai = new GoogleGenAI({ apiKey: envApiKey });
-
-      const questionSchema = z
-        .array(
-          z.object({
-            question: z.string().describe('The text of the quiz question'),
-            options: z
-              .array(z.string())
-              .length(4) // Strictly forces exactly 4 options
-              .describe('A list of 4 possible answers'),
-            correctAnswerIndex: z
-              .number()
-              .int()
-              .min(0)
-              .max(3) // Ensures the index points to one of the 4 options
-              .describe('The zero-based index of the correct answer')
-          })
-        )
-        .length(3); // Strictly forces exactly 3 questions in the quiz
-
-      const quizSchema = z.object({ questions: questionSchema }).describe('questions');
-
-      // GEMINI
-      const prompt =
-        'Extract the following text and generate high-quality multiple choice questions to measure understanding of the text: ' +
-        text +
-        +' Return strictly valid JSON matching the provided schema. Do not include introductory text like Here is your quiz.';
 
       setIsLoading(true);
-      setQuestions([]);
 
-      try {
-        const response = await ai.models.generateContent({
-          model: 'gemini-2.5-flash-lite',
-          contents: prompt,
-          config: {
-            responseMimeType: 'application/json',
-            responseJsonSchema: zodToJsonSchema(quizSchema)
-          }
-        });
-        console.log(response.text);
 
-        if (response.text) {
-          setQuestions(JSON.parse(response.text)?.questions ?? []);
-        }
-      } catch (e) {
-        // setQuestions(mockQuiz);
-        console.error(e);
-      } finally {
-        setIsLoading(false);
-      }
+      // try {
+
+      setQuestions(mockQuiz);
+      setIsLoading(false);
+
     }
 
     getQuizQuestions();

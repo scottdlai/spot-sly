@@ -142,7 +142,7 @@ export default function Quiz({
           }
 
           return (
-            <div className="flex">
+            <div key={`${currentQuestion.question}-${idx}`} className="flex">
               <button
                 key={`${currentQuestion.question}-${idx}`}
                 disabled={hasAnswered} // Prevent changing answer
