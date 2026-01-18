@@ -46,18 +46,24 @@ export interface QuizProps {
 export default function Quiz({ questions = mockQuiz }: QuizProps = {}) {
     const [current, setCurrent] = useState(0);
     const [selected, setSelected] = useState<number | null>(null);
+    const [score, setScore] = useState<number>(0);
 
     const currentQuestion = questions[current];
     const finished = current >= questions.length;
-
-    const handleSelect = (index: number) => {
-        if (selected === null) setSelected(index);
-    };
 
     const nextQuestion = () => {
         if (current < questions.length) {
             setCurrent(current + 1);
             setSelected(null);
+        }
+    };
+    const handleSelect = (index: number) => {
+        if (selected === null) {
+            setSelected(index);
+        }
+
+        if (index === questions[current].correctIndex) {
+            setScore(score => score + 1);
         }
     };
 
