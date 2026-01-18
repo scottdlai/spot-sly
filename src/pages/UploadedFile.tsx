@@ -99,7 +99,14 @@ export default function UploadedFile({
   }
 
   if (startReading && hasTextSelected) {
-    return <SpeedReaderComponent text={selectedSection.text} wps={wps} onWpsChange={setWps} />;
+    return (
+      <SpeedReaderComponent
+        text={selectedSection.text}
+        wps={wps}
+        onWpsChange={setWps}
+        back={cancelCurrentBook}
+      />
+    );
   }
 
   return (
